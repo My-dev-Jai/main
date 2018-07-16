@@ -1,0 +1,53 @@
+<aura:component controller="StateCountryController">
+    <aura:attribute name="required" type="Boolean" default="false"/>
+    <aura:attribute name="showError" type="Boolean" default="false"/>
+    <aura:attribute name="countryValues" type="String[]"/>
+    <aura:attribute name="stateValues" type="String[]"/>
+    <aura:attribute name="countrySelected" type="String" default=""/>
+    <aura:attribute name="stateSelected" type="String" default=""/>
+    <aura:attribute name="countryCode" type="String"/>
+    <aura:attribute name="stateCode" type="String"/>
+    <aura:attribute name="noState" type="Boolean" default="false"/>
+    <aura:attribute name="fieldDependencies" type="Object[]"/>
+
+    <ltng:require afterScriptsLoaded="{!c.loadPicklists}" />
+    <div class="slds-grid slds-grid--end">
+        <div class="slds-col--padded slds-size--1-of-1">
+            <aura:if isTrue="{!v.required}">
+                <span class="slds-float--left red">*</span>
+            </aura:if>
+            <label class="slds-form-element__label" for="text-input-02">Country</label>
+            <ui:inputSelect class="slds-select" value="{!v.countrySelected}" change="{!c.changeCountry}">
+                <aura:if isTrue="{!v.countrySelected == ''}">
+                    <ui:inputSelectOption text="" label="Select an option...." value="{!v.countrySelected == item ? 'true' : 'false'}"/>
+                </aura:if>
+                <aura:iteration items="{!v.countryValues}" var="item">
+                    <ui:inputSelectOption text="{!item}" label="{!item}" value="{!v.countrySelected == item ? 'true' : 'false'}"/>
+                </aura:iteration>
+            </ui:inputSelect>
+            <aura:if isTrue="{!and(v.showError,v.countrySelected eq '')}">
+                <label style="padding-top: 12px; font-weight:500; font-size: 10px; color:red" >Country cannot be empty.</label>
+            </aura:if>
+        </div>
+    </div>
+    <br/>
+    <div class="slds-grid slds-grid--end">
+        <div class="slds-col--padded slds-size--1-of-1">
+            <aura:if isTrue="{!v.required}">
+                <span class="slds-float--left red">*</span>
+            </aura:if>
+            <label class="slds-form-element__label" for="text-input-01">State</label>
+            <ui:inputSelect class="slds-select" value="{!v.stateSelected}" change="{!c.changeState}" disabled="{!v.stateValues.length eq 0 ? true : false}">
+                <aura:if isTrue="{!v.stateSelected == ''}">
+                    <ui:inputSelectOption text="" label="Select an option..." value="{!v.stateSelected == '' ? 'true' : 'false'}"/>
+                </aura:if>
+                <aura:iteration items="{!v.stateValues}" var="item">
+                    <ui:inputSelectOption text="{!item}" label="{!item}" value="{!v.stateSelected == item ? 'true' : 'false'}"/>
+                </aura:iteration>
+            </ui:inputSelect>
+            <aura:if isTrue="{!and(v.showError,v.stateSelected eq '') ? (v.stateValues.length gt 0 ? true : false) : false }">
+                <label style="padding-top: 12px; font-weight:500; font-size: 10px; color:red" >State cannot be empty.</label>
+            </aura:if>
+        </div>
+    </div>
+</aura:component>

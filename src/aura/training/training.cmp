@@ -1,0 +1,55 @@
+<aura:component>
+    <aura:attribute name="showModal" type="boolean" default="false"/>
+    <!--<div class="slds-box slds-p-bottom_xxx-small">
+    <div class="slds-form-element slds-p-bottom_xxx-small">
+  <label class="slds-form-element__label" for="form-element-01">My form</label>
+  <div class="slds-form-element__control">
+    <lightning:input type="text" id="form-element-01" name="name" label="First Name" class="slds-input" placeholder="Enter First Name" />
+  
+      <div class="slds-form-element__control">
+    <lightning:input type="text" id="form-element-01" name="name" label="Last Name" class="slds-input" placeholder="Enter Last Name" />
+ </div>
+        <div class="slds-form-element__control">
+            Relationship:
+    <lightning:input type="checkbox" id="form-element-01" name="name" label="Parents" class="slds-input" />
+    <lightning:input type="checkbox" id="form-element-02" name="name" label="Siblings" class="slds-input" />
+  	<lightning:input type="checkbox" id="form-element-03" name="name" label="Spouse" class="slds-input" />
+  	<lightning:input type="checkbox" id="form-element-04" name="name" label="Children" class="slds-input" />
+  </div>
+  </div>
+</div>
+        <lightning:button label="Submit" variant="brand"/>
+    </div>-->
+     <lightning:button label="Submit" variant="brand" onclick="{!c.buttonAction}"/>
+    <aura:if isTrue="{!v.showModal}">
+    <div class="demo-only" style="height: 640px;">
+<section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+<div class="slds-modal__container">
+<header class="slds-modal__header">
+<button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close">
+
+<span class="slds-assistive-text">Close</span>
+</button>
+<h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Modal Header</h2>
+</header>
+<div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+ <div class="slds-grid slds-wrap">
+<div class="slds-col slds-size_1-of-1 slds-small-size_1-of-2 slds-large-size_8-of-12">
+<span>1</span>
+</div>
+<div class="slds-col slds-size_1-of-1 slds-small-size_1-of-2 slds-large-size_4-of-12">
+<span>2</span>
+</div>
+</div>
+</div>
+<footer class="slds-modal__footer">
+<lightning:button class="slds-button slds-button_neutral" onclick="{!c.closeModal}">Cancel</lightning:button>
+<lightning:button class="slds-button slds-button_brand" onclick="{!c.closeModal}">Save</lightning:button>
+</footer>
+</div>
+</section>
+<div class="slds-backdrop slds-backdrop_open"></div>
+</div>
+    </aura:if>
+    
+</aura:component>

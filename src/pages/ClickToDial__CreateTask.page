@@ -1,0 +1,11 @@
+<apex:page controller="ClickToDial.TaskController">
+<script type="text/javascript">
+        window.onload=function() 
+        {
+            redirectPage();
+        }
+    </script>
+    <apex:form >
+  <apex:actionFunction action="{!redirectTo}" name="redirectPage" />
+  </apex:form>
+</apex:page>

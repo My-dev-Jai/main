@@ -1,0 +1,131 @@
+<apex:page sidebar="false" showHeader="true" standardStylesheets="true" docType="html-5.0"  tabStyle="ClickToDial__tab">
+
+<html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" lang="en">
+  <head>
+    <title>Click to call Resources</title>
+    <!-- Bootstrap core CSS -->
+    <apex:stylesheet value="{!URLFOR($Resource.ClickToDial__Bootstrap,'bootstrap-3.2.0-dist/css/bootstrap.min.css')}"/>
+    
+    <style>
+        .divblocks {
+            height:220px;
+            color: #048FC2;
+        }
+        .detailP{
+            height: 120px;
+            color: #999;
+            padding-top: 10px;
+        }
+         a {
+        text-decoration: none !important;
+    }
+    .bs .col-lg-4 {
+      width: 46.333333%;
+      height: 120px;
+    }
+    .detailP {
+       height: 34px; 
+      color: #999;
+      padding-top: 10px;
+    }
+    .detailT {
+      
+      color: #333333;
+      font-size: 14px;
+      padding-top: 10px;
+    }
+    .slds-section-title--divider{font-weight: bold;
+    font-size: 16px;
+    color: black;
+    }
+    
+    .slds-list--horizontal ul { 
+         
+        margin: 0;
+        padding: 0;
+        height: 100%; width:100%; font-size: 0;
+                                   
+      }
+      .slds-item { 
+      color: #333333;
+      font-size: 14px;
+      
+                        
+        margin: 12px 0px 12px 12px;
+        padding: 12px 0px 12px 12px; 
+        list-style: none;            
+        border: solid 1px #F4F6F9;
+        width: 100%;
+      }
+
+     button:focus {outline:0 !important;}
+         .bs h1, .bs .h1, .bs h2, .bs .h2, .bs h3, .bs .h3 {
+          margin-top: 10px;
+          margin-bottom: 10px;
+        }
+        .bs h1, .bs h2, .bs h3, .bs h4, .bs h5, .bs h6, .bs .h1, .bs .h2, .bs .h3, .bs .h4, .bs .h5, .bs .h6 {
+          font-family: inherit;
+          font-weight: 600;
+          line-height: 1.1;
+          color: inherit;
+        }
+    </style>
+        <apex:slds />
+  </head>
+
+  <body>
+  <div style="width:20%">
+  <c:BootstrapComponent xFactor="ResourcesTab" />
+  </div>
+  <div class="bs">
+    
+    <div class="container-fluid" style="margin-top:17px;">
+    
+      <div class="row row-offcanvas row-offcanvas-right">
+        
+        <div class="col-xs-12 col-sm-9">
+          
+          <div class="jumbotron" style="-webkit-border-radius:5px; padding:22px;">
+            <h2>Post Install Setup Instructions</h2>
+         </div>
+          <div class="row"> 
+          <div class="col-6 col-sm-6 col-lg-12 divblocks">
+             <p class="detailT"><h3 class=" slds-section-title--divider ">STEP 1</h3>
+              <!-- RESPONSIVE GRID EXAMPLE -->
+            <ul class="slds-list--horizontal">
+              <li class="slds-item" ><h4>Add users to the Call Center</h4><br/>
+              Go to Setup, enter Call Centers in the Quick find box, then click Call Centers.<br/>
+                Click the Edit next to the "ClickToDial" Center Adapter and then click Manage Call Center Users.<br/>
+                Add any additional users that you want to use this demo adapter.<br/><br/>
+                    OR<br/><br/>
+
+                Click the Plus icon (+) to the right of your current tabs.<br/>
+                The All Tabs page appears.<br/>  
+                Click on "Click to Call" Tab | Select Manage Users| Select users from the list view | Click "Add to Call Center".<br/><br/></li></ul>
+                <h3 class="slds-section-title--divider">STEP 2</h3>
+              <!-- RESPONSIVE GRID EXAMPLE -->
+            <ul class="slds-list--horizontal">
+              <li class="slds-item" > Goto Leads/Contacts/Accounts | Select a Record | Click any Phone/Mobile field to place a call. Call activity should appear in the sidebar.<br/><br/></li></ul></p>
+               
+             </div>   
+         
+                    
+
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+    <!-- Bootstrap core JavaScript <div class="container-fluid"></div>
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->    
+    <apex:includeScript value="{!URLFOR($Resource.ClickToDial__Bootstrap,'bootstrap-3.2.0-dist/js/bootstrap.min.js')}"/>
+    <style>
+    .bs .col-lg-4 {
+  width: 46.333333%;
+}
+    </style>
+  </body>
+</html>
+
+</apex:page>

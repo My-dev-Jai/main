@@ -1,0 +1,63 @@
+<aura:component >
+    
+   
+    <aura:registerEvent name="MyComponentEvent" type="c:MyComponentEvent"/>
+
+    <h1>Simple Component Event Sample</h1>
+    <p><lightning:button
+        label="Click here to fire a component event"
+        onclick="{!c.fireComponentEvent}" />
+    </p>
+
+    <!--<aura:attribute type="String" name="lname"/>
+    <aura:attribute type="String" name="email"/>
+     <aura:attribute type="String" name="street"/>
+     <aura:attribute type="String" name="Country"/>
+     <aura:attribute type="String" name="postalcode"/>
+     <aura:attribute type="String" name="province"/>
+    <aura:attribute type="Integer" name="step" default="1"/>
+    
+    <aura:if isTrue="{!v.step==1}">
+    <div class="slds-box">
+        <h1>XYZ School</h1>
+        First Name:
+        <lightning:input type="text" value="{!v.fname}"/>
+            Last Name:
+        <lightning:input type="text" value="{!v.lname}"/>
+        <br/>
+        Email:
+        <lightning:input type="text" value="{!v.email}"/>
+        Address<sup>*</sup><br/>
+        Street:
+        
+        <lightning:input type="formattedrichtext" value="{!v.lname}" required="true" />
+        <div class="slds-rich-text-editor"></div>
+         Country:
+        <lightning:input type="text" value="{!v.country}" required="true"/>
+         Province:
+        <lightning:input type="text" value="{!v.email}"/>
+         Postal Code:
+        <lightning:input type="text" value="{!v.postalcode}"/>
+        <lightning:button  value="Next" onclick="{!c.handleClick}">Next</lightning:button>
+    </div>
+    </aura:if>
+    <aura:if isTrue="{!v.step==2}">
+        Looking for:<br/>
+        <input type="radio" name="radio" id="UG" value="UG" />UG<br/>
+    	<input type="radio" name="radio" id="PG" value="PG" />PG
+           Program Selecter:
+    <div class="slds-form-element">
+  <label class="slds-form-element__label" for="select-01">Select Label</label>
+  <div class="slds-form-element__control">
+    <div class="slds-select_container">
+      <select class="slds-select" id="select-01">
+        <option value="">Please select</option>
+        <option>Option One</option>
+        <option>Option Two</option>
+        <option>Option Three</option>
+      </select>
+    </div>
+  </div>
+</div>
+    </aura:if>-->
+</aura:component>

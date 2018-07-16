@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <help><!-- &quot;Yes&quot; for auto call log and &quot;No&quot; for user confirmation. --></help>
+        <label><!-- Enable Auto Call Log --></label>
+        <name>ClickToDial__EnableAutoCallLog__c</name>
+    </fields>
+    <fields>
+        <help><!-- Specify the country code to automatically add country code to your Click-to-Call links. Leave this field blank if your phone numbers already have country code. Example: +1 for US and Canada, +91 for India. --></help>
+        <label><!-- Global Country Code --></label>
+        <name>ClickToDial__Global_Country_Code__c</name>
+    </fields>
+</CustomObjectTranslation>

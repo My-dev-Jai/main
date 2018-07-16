@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <interviewLabel>terms and Condition flow {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>terms and Condition flow</label>
+    <processType>AutoLaunchedFlow</processType>
+    <variables>
+        <name>LoginFlow_UserId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+</Flow>

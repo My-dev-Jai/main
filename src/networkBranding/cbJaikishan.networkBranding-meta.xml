@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<NetworkBranding xmlns="http://soap.sforce.com/2006/04/metadata">
+    <loginFooterText>salesforce.com</loginFooterText>
+    <loginPrimaryColor>#1797C0</loginPrimaryColor>
+    <loginQuaternaryColor>#FFFFFF</loginQuaternaryColor>
+    <loginRightFrameUrl>https://process.filestackapi.com/AhTgLagciQByzXpFGRI0Az/resize=width:600,height:560/https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUSapb_TYtYFo2WIboyd0LWaL4QNI5XVqYRVc-5PBR0sRNmdFC</loginRightFrameUrl>
+    <network>Jaikishan</network>
+    <primaryColor>#1797C0</primaryColor>
+    <primaryComplementColor>#FFFFFF</primaryComplementColor>
+    <quaternaryColor>#B1BAC1</quaternaryColor>
+    <quaternaryComplementColor>#222222</quaternaryComplementColor>
+    <secondaryColor>#51606E</secondaryColor>
+    <staticLogoImageUrl>http://creativeoverflow.net/wp-content/uploads/2015/05/Macd.jpg</staticLogoImageUrl>
+    <tertiaryColor>#DDE4E9</tertiaryColor>
+    <tertiaryComplementColor>#222222</tertiaryComplementColor>
+    <zeronaryColor>#51606E</zeronaryColor>
+    <zeronaryComplementColor>#FFFFFF</zeronaryComplementColor>
+</NetworkBranding>

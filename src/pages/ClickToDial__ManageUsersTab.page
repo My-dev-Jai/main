@@ -1,0 +1,189 @@
+<apex:page sidebar="false" showHeader="true" standardController="User" extensions="ClickToDial.UsersController" recordSetVar="User" standardStylesheets="true" docType="html-5.0" tabStyle="ClickToDial__tab">
+<html lang="en">
+    <head>
+        <title>Contact</title>       
+        <!-- Bootstrap core CSS -->
+       <apex:stylesheet value="{!URLFOR($Resource.ClickToDial__Bootstrap,'bootstrap-3.2.0-dist/css/bootstrap.min.css')}"/>
+        <style>
+            .divblocks {
+                height:220px;
+                color: #048FC2;
+            }
+            .detailP{
+                height: 120px;
+                color: #999;
+                padding-top: 10px;
+            }
+            .bs .lastItem .btn
+                {
+                <!--Issue refreshListButton was not showing on List view -->
+                background:url("/img/alohaSkin/sync.png") no-repeat scroll 2px 2px rgba(0, 0, 0, 0);
+                }
+                a {
+               text-decoration: none !important;
+               }
+             button:focus {outline:0 !important;}
+             .bs h1, .bs .h1, .bs h2, .bs .h2, .bs h3, .bs .h3 {
+              margin-top: 20px;
+              margin-bottom: 10px;
+            }
+            .bs h1, .bs h2, .bs h3, .bs h4, .bs h5, .bs h6, .bs .h1, .bs .h2, .bs .h3, .bs .h4, .bs .h5, .bs .h6 {
+              font-family: inherit;
+              font-weight: 600;
+              line-height: 1.1;
+              color: inherit;
+            }
+            body .pbBody table.list tr.dataRow th, body .pbBody table.list tr.dataRow td {
+  border-width: 0 0 1px 0;
+  vertical-align: middle;
+  padding: 3px;
+}
+       </style>
+         
+    </head>
+    <body>
+       
+        <div style ="width:20%">  
+        <c:BootstrapComponent xFactor="ManageUsersTab"/>       
+        </div>
+       
+         <div class="bs">
+            <div class="container-fluid" style="margin-top:17px;">
+                <div class="row row-offcanvas row-offcanvas-right">
+                    <div class="col-xs-12 col-sm-9">                                             
+                        <div class="jumbotron" style="-webkit-border-radius:5px; padding:22px;">                       
+                          <h2>Manage Users</h2>        <p style="font-size:10px; color:black; float:right; valign:bottom; padding-top:30px;" > Select the users you want to be members of the call center</p>         
+                       </div>
+                      
+                       
+                       <div id="LeadListView" >
+                      <apex:form >   
+                      <div style="padding-bottom: 5px; font-size: 14px;">
+                      <img src="/s.gif" alt="Home" class="pageTitleIcon" title="Home"/>
+                         <apex:selectList value="{!filterId}" size="1" >
+                            <apex:actionSupport event="onchange" rerender="cases_table"/>
+                            <apex:selectOptions value="{!listviewoptions}"/>
+                          </apex:selectList>
+                          </div>
+                      <div>  
+                       
+                         <apex:pageBlock >
+                         <apex:pageMessages id="msg"></apex:pageMessages>
+                           <apex:commandButton id="edit" onclick="UserCallCenterEnbale()" style="margin-bottom: 10px;" value="Add to Call Center" reRender="cases_table,msg"/>
+                           <apex:commandButton id="inactive" onclick="UserCallCenterDisable()" style="margin-bottom: 10px;" value="Remove from Call Center" reRender="cases_table,msg"/>
+                           
+                            <apex:pageBlockTable value="{!user}" var="c" rows="100" id="cases_table" > 
+                                                  
+                             <apex:column width="25px">
+                                <apex:facet name="header">
+                                    <input type="checkbox" onclick="checkAll(this,'Inputs')"/>
+                                </apex:facet>
+                                 <input id="Inputs" style="margin-left: 5px;" value="{!c.Id}" title="" type="checkbox" class="checkbox" name="ids"/>
+                            </apex:column>                               
+                                <apex:column value="{!c.Name}" />
+                                <apex:column value="{!c.Email}" />   
+                                <apex:column value="{!c.Phone}" />   
+                                <apex:column value="{!c.UserName}" />  
+                                <apex:column headerValue="Profile" value="{!c.profile.Name}" />                               
+                                <!--<apex:column value="{!c.CallCenterId}" />-->                      
+                            </apex:pageBlockTable>                                   
+                        </apex:pageBlock>  
+                        <apex:actionfunction name="EnableCallCenter" action="{!CallCenterEnable}" reRender="cases_table,msg">
+                               <apex:param name="param1" assignTo="{!Ids}" value=""/>
+                        </apex:actionfunction>    
+                        <apex:actionfunction name="DisableCallCenter" action="{!CallCenterDisable}" reRender="cases_table,msg">
+                               <apex:param name="param1" assignTo="{!Ids}" value=""/>
+                        </apex:actionfunction>    
+                  </div>
+              </apex:form>
+            <base target="_parent"/>                      
+                        </div>
+                    </div><!--/span-->
+                </div><!--/row-->
+            </div><!--/.container-->
+        </div>        
+         <script> 
+         function checkAll(cb,cbid)
+            {
+                var inputElem = document.getElementsByTagName('input');                                 
+                for(var i=0; i<inputElem.length; i++)
+                {        
+                     if(inputElem[i].id.indexOf(cbid)!=-1){                                        
+                        inputElem[i].checked = cb.checked;
+                    }
+                }                
+            }        
+          $("form").on( "click", "input", function() {
+            var record = document.getElementsByTagName('input');            
+            var Ids = '';
+            for(var i=0; record[i]; ++i){
+              if(record[i].checked){
+              if(record[i].value != 'on')
+                  {
+                      if(Ids=='')
+                      {
+                      Ids = record[i].value;
+                      }
+                      else
+                      {
+                      Ids = Ids+','+record[i].value;
+                      }
+                  }
+              }  
+             }
+            });
+            
+          
+          </script> 
+          <script>
+          function UserCallCenterEnbale()
+           {
+            var record = document.getElementsByTagName('input');                        
+            var Ids = '';
+            for(var i=0; record[i]; ++i){
+              if(record[i].checked){
+              if(record[i].value != 'on')
+                  {
+                      if(Ids=='')
+                      {
+                      Ids = record[i].value;
+                      }
+                      else
+                      {
+                      Ids = Ids+','+record[i].value;
+                      }
+                  }
+              }  
+             }
+              EnableCallCenter(Ids)
+           } 
+           function UserCallCenterDisable()
+           {
+            var record = document.getElementsByTagName('input');                        
+            var Ids = '';
+            for(var i=0; record[i]; ++i){
+              if(record[i].checked){
+                  if(record[i].value != 'on')
+                  {
+                      if(Ids=='')
+                      {
+                      Ids = record[i].value;
+                      }
+                      else
+                      {
+                      Ids = Ids+','+record[i].value;
+                      }
+                  }
+              }  
+             }
+              DisableCallCenter(Ids)
+           } 
+          </script>
+        <!-- Bootstrap core JavaScript <div class="container-fluid"></div>
+        ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->   
+      <apex:includeScript value="{!URLFOR($Resource.ClickToDial__Bootstrap,'bootstrap-3.2.0-dist/js/bootstrap.min.js')}"/>
+    </body>
+</html>
+
+</apex:page>

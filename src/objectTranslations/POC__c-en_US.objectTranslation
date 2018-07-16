@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>POC</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>POCs</value>
+    </caseValues>
+    <fields>
+        <label><!-- Visits --></label>
+        <name>Visits__c</name>
+    </fields>
+    <fields>
+        <label><!-- picklist poc --></label>
+        <name>picklist_poc__c</name>
+        <picklistValues>
+            <masterLabel>ABC</masterLabel>
+            <translation><!-- ABC --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>DEF</masterLabel>
+            <translation><!-- DEF --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>GHI</masterLabel>
+            <translation><!-- GHI --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>JKL</masterLabel>
+            <translation><!-- JKL --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>MNO</masterLabel>
+            <translation><!-- MNO --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>PQR</masterLabel>
+            <translation><!-- PQR --></translation>
+        </picklistValues>
+    </fields>
+    <layouts>
+        <layout>POC Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Address Component</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Address Components</value>
+    </caseValues>
+    <fields>
+        <label><!-- Address --></label>
+        <name>Address__c</name>
+    </fields>
+    <fields>
+        <label><!-- City --></label>
+        <name>City__c</name>
+    </fields>
+    <fields>
+        <label><!-- Country --></label>
+        <name>Country__c</name>
+    </fields>
+    <fields>
+        <label><!-- Geo Code Accuracy --></label>
+        <name>GeoCodeAccuracy__c</name>
+    </fields>
+    <fields>
+        <label><!-- Postal/Zip Code --></label>
+        <name>PostalCode__c</name>
+    </fields>
+    <fields>
+        <label><!-- State --></label>
+        <name>State__c</name>
+    </fields>
+    <fields>
+        <label><!-- Street Line 1 --></label>
+        <name>StreetLine1__c</name>
+    </fields>
+    <fields>
+        <label><!-- Street Line 2 --></label>
+        <name>StreetLine2__c</name>
+    </fields>
+    <fields>
+        <label><!-- Street Line 3 --></label>
+        <name>StreetLine3__c</name>
+    </fields>
+    <fields>
+        <label><!-- Street Line 4 --></label>
+        <name>StreetLine4__c</name>
+    </fields>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

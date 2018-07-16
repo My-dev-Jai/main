@@ -1,0 +1,22 @@
+<apex:page standardController="POC__c" extensions="VisitController" action="{!increamentor}">
+  <script>
+  
+  
+ <!--
+   window.onload= function myJavascriptFunc()
+    {
+        if(!{!b})
+         hold();
+    }  
+     
+ !>
+  
+  
+  
+  
+  
+  </script>
+   <apex:form >
+      <apex:actionFunction action="{!increamentor}" name="hold"/>
+  </apex:form>
+</apex:page>

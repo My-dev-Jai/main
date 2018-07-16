@@ -1,0 +1,42 @@
+<apex:page >
+<script type="text/javascript">
+var __sfdcSessionId='{!GETSESSIONID()}';
+</script>
+<script type="text/javascript" src="../../soap/ajax/32.0/connection.js"></script>
+<script type="text/javascript" src="../../soap/ajax/32.0/apex.js"></script>
+<script>
+
+function myfunction(){
+//try{
+alert(__sfdcSessionId);
+var accountobj=new sforce.SObject("Account");
+//accountobj.name=document.getElementById('accname').value;
+var name=document.getElementById('accname').value;
+var results=sforce.apex.execute("myclass","mymethod",{accname:name});
+alert(results);
+//alert(results[0].ID);
+/*if(result[0].success === "true"){ 
+alert(results[0].ID); 
+} 
+else{ 
+alert( 
+"An Error has Occurred. Error: " + 
+result[0].errors.message 
+); 
+} 
+} 
+catch(e){ 
+alert( 
+"An unexpected Error has Occurred. Error: " + 
+e 
+); 
+}
+*/
+}
+</script>
+
+<input type="text" id="accname"/>
+<input type="button" value="button" onclick="myfunction()"/>
+
+
+</apex:page>

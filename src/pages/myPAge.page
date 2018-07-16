@@ -1,0 +1,20 @@
+<apex:page extensions="TestController" standardController="Account">
+<apex:form >
+<apex:selectList multiselect="false" value="{!selaccount}" size="1" >
+<apex:SelectOptions value="{!accounts}"></apex:SelectOptions>
+<apex:actionSupport event="onchange" rerender="tab" action="{!setupContacts}"/>
+</apex:selectList>
+<apex:inputField value="{!Account.Industry}"/>
+<apex:inputField value="{!Account.CustomerPriority__c}"/>
+<apex:pageBlock id="tab">
+<apex:pageBlocksection rendered="{!showtable}">
+<apex:pageBlockTable value="{!Contacts}" var="cont"  >
+<apex:column headerValue="Name"><apex:outputLink value="/{!cont.id}">{!cont.Name}</apex:outputLink>
+</apex:column>
+
+</apex:pageBlockTable>
+</apex:pageBlocksection>
+</apex:pageBlock>
+<apex:commandButton action="{!editacc}"  value="abcd"/>
+</apex:form>
+  </apex:page>

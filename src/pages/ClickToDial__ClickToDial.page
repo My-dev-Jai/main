@@ -1,0 +1,2260 @@
+<apex:page controller="ClickToDial.ClickToDialController" sidebar="false" docType="html-5.0" showHeader="false">
+
+    <head>
+        <base target="_parent" />
+    </head>
+    
+     <apex:includeScript value="{!URLFOR($Resource.ClickToDial__CommonJs, '/development-bundle/jquery-1.8.2.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.ClickToDial__CommonJs,'/js/SlimScroll.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.ClickToDial__CommonJs,'/js/Timer.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.ClickToDial__CommonJs, '/development-bundle/ui/jquery.ui.position.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.ClickToDial__CommonJs, '/development-bundle/ui/jquery.ui.core.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.ClickToDial__CommonJs, '/development-bundle/ui/jquery.ui.widget.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.ClickToDial__CommonJs, '/development-bundle/ui/jquery.ui.tabs.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.ClickToDial__CommonJs, '/development-bundle/ui/jquery.ui.dialog.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.ClickToDial__CommonJs, '/development-bundle/ui/jquery.ui.mouse.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.ClickToDial__CommonJs, '/development-bundle/ui/jquery.ui.draggable.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.ClickToDial__CommonJs, '/js/phone-format.js')}" />
+     <apex:includeScript value="{!URLFOR($Resource.ClickToDial__ClickToDialSrJQuery, '/ClickToDialSrJQuery/js/encoder.js')}" />
+  
+   
+    <script src="/support/api/29.0/interaction.js"></script> 
+    <script>
+        $ = jQuery.noConflict();
+    </script>
+    <style>
+        .wdgtDescription {
+            cursor: default;
+            padding-top: 0px;
+            padding-left: 0px;
+            height: 58px;
+            font-size: 20px;
+            margin: 0px;
+            width: 198px;
+            border: 2px solid #C6C6C6;
+            border-left: 0;
+            border-right: 0;
+        }
+        
+        .wdgtDescription a {
+            background-color: #E6E6E6;
+            float: left;
+            margin: 0px;
+            padding-right: 2px;
+        }
+        
+        .wdgtDescription p {
+            font-weight: bold;
+            font-size: 11px;
+            padding-top: 5px;
+            margin: 0 0 0 60px;
+        }
+        
+        .inputSearch {
+            width: 80%;
+            border: none;
+            height: 16px;
+            font-size: 12px;
+            margin-left: 3px;
+        }
+        
+        .wdgtFooter {
+            <!-- background-color: #ffcb07;
+            --> background-color: gray;
+        }
+        
+        .wdgtFooter p {
+            cursor: default;
+            padding-top: 0px;
+            padding-left: 0px;
+            height: 35px;
+            font-size: 20px;
+            margin: 0px;
+            width: 198px;
+        }
+        
+        .wdgtFooter a {
+            float: left;
+            margin: 3px;
+            display: none;
+        }
+        
+        .wdgtFooter a.callEnd {
+            display: block !important;
+        }
+        
+        .show {
+            display: block !important;
+        }
+        
+        .callEnd {
+            background-color: #ff0000;
+            padding: 0px;
+            height: 35px;
+            float: right !important;
+            padding-right: 0px;
+            margin: 0 !important;
+        }
+        
+        .callAnswer {
+            background-color: #89B22B;
+            padding: 0px;
+            height: 35px;
+            display: none;
+            padding-right: 0px;
+            margin: 0 !important;
+        }
+        
+        .callEnd img {
+            margin-top: 5px;
+        }
+        
+        .showCallPlay {
+            display: block !important;
+        }
+        
+        .divWdg {
+            display: none;
+        }
+    </style>
+
+    <style>
+        html,
+        body {
+            height: 100%;
+            font-size: 0.80em;
+            overflow: hidden;
+        }
+        
+        p a.popup3 {
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 11px;
+            font-family: Arial, ?Helvetica, ?sans-serif;
+            padding-top: 4px;
+            padding-bottom: 7px;
+            padding-left: 0px;
+            line-height: 18px;
+        }
+        
+        #hover12 a.popup3 {
+            line-height: 1;
+        }
+        
+        #hover12 a.popup3 img {
+            margin-right: 4px;
+            vertical-align: middle;
+        }
+        
+        .sideItem {
+            text-decoration: none;
+            cursor: pointer;
+            padding-top: 10px;
+            padding-right: 15px;
+            padding-bottom: 13px;
+            padding-left: 0px;
+        }
+        
+        p a.popup3 span.comment {
+            display: none;
+            width: 140px;
+            margin: 15px;
+            border-radius: 5px;
+            -webkit-border-radius: 5px;
+            border: 2px solid silver;
+            text-decoration: none;
+            background-color: #f5f5f4;
+            z-index: 10;
+            padding: 10px;
+            border: 1px solid silver;
+            font-weight: normal;
+            font-size: 11px;
+            font-family: Arial, ?Helvetica, ?sans-serif;
+            box-shadow: 5px 0 7px gray;
+        }
+        
+        p a.popup3 span.comment span {
+            line-height: 18px;
+        }
+        
+        html>body p a.popup3 span.comment {
+            position: absolute;
+        }
+        
+        .bubble {
+            position: absolute;
+        }
+        
+        p a:hover.popup3 span.comment {
+            display: block;
+            margin-top: 0px;
+        }
+        
+        .hSearch{
+            width:95%;
+            border:none;
+            height:16px;
+            margin-left:2px
+        }
+        
+        .bubble:after {
+            content: "";
+            position: absolute;
+            bottom: 100%;
+            left: 20px;
+            border-bottom: 10px solid black;
+            border-bottom-color: white;
+            border-left: 3px solid transparent;
+            border-right: 14px solid transparent;
+        }
+        
+        .headerStyle {
+            border: solid 1px grey;
+            background-color: #C6E1FF !important;
+            width: 81.5%;
+            position: fixed;
+        }
+        
+        .apexp {
+            height: 86%;
+        }
+        
+        .incDivC .pbBody {
+            height: 222px;
+        }
+        
+        .content .pbBody {
+            margin: 2px !important;
+        }
+        
+        .entry {
+            height: 75px;
+            border-bottom: solid 1px #cccccc;
+            border-top: solid 1px #cccccc;
+            border-collapse: collapse;
+            padding: 5px;
+        }
+        
+        .layer1 {
+            width: 194px;
+        }
+        
+        .tabClass {
+            font-family: Arial, Helvetica, sans-serif;
+            font-weight: bold;
+            font-size: 11px;
+            text-align: center;
+            padding-top: 3px !important;
+            padding-left: 8px !important;
+        }
+        
+        .topheader {
+            margin-top: 0 !important;
+        }
+        
+        ::-webkit-input-placeholder {
+            font-size: 13px;
+        }
+        
+        ::-moz-placeholder {
+            font-size: 13px;
+        }
+        /* firefox 19+ */
+        
+        :-ms-input-placeholder {
+            font-size: 13px;
+        }
+        /* ie */
+        
+        input:-moz-placeholder {
+            font-size: 13px;
+        }
+        
+        .heading {
+            margin-left: 1px;
+            margin-top: 9px;
+            margin-bottom: 2px;
+            border-radius: 6px 6px;
+            font-weight: bold;
+            text-align: center;
+            text-valign: middle;
+            font-size: 13px;
+            color: white;
+            padding: 5px 9px;
+            cursor: pointer;
+            position: relative;
+            font-family: Arial, Helvetica, sans-serif;
+            position: relative;
+            background-color: #C6C6C6;
+        }
+        
+        .content {
+            background-color: white;
+        }
+        
+        p {
+            padding: 0;
+        }
+        
+        p a.popup3 img {
+            float: left;
+        }
+        
+        p a.popup3 p {
+            padding: 4px 2px 4px 0px;
+        }
+        
+        p a.popup3 a p {
+            padding: 0;
+        }
+        
+        p a.popup3 span p {
+            padding: 0;
+        }
+        
+        *:focus {
+            outline: none;
+        }
+        
+        .ClickToDial-button {
+            background-color: #1797C0 !important;
+        }
+        
+        .ClickToDial-box {
+            margin-left: 1px !important;
+            margin-bottom: 4px !important;
+            border-radius: 6px 6px !important;
+            font-weight: bold !important;
+            text-align: left !important;
+            font-size: 12px !important;
+            color: white !important;
+            padding: 5px 9px !important;
+            cursor: pointer !important;
+            font-family: Arial, Helvetica, sans-serif !important;
+            position: relative !important;
+            background-color: #1797C0 !important
+        }
+        
+        .ClickToDial.ClickToDial-bullet {
+            width: 30px !important;
+            height: 30px !important;
+            line-height: 30px !important;
+            background-color: #1797C0 !important;
+        }
+        
+        .ClickToDial-loading-screen-bars .ClickToDial-loader-dot {
+            background-color: #1797C0 !important;
+        }
+        
+        .truncate {
+            white-space: nowrap;
+            overflow: hidden;
+            color: black;
+            margin: 0;
+            text-overflow: ellipsis;
+            -o-text-overflow: ellipsis;
+        }
+        
+        a .meeting {
+            font-weight: normal;
+            color: #D9111F;
+            margin-left: 30px;
+            background-color: #FFFFFF;
+            border: 1px solid #;
+            text-decoration: none;
+            letter-spacing: 0pt;
+            word-spacing: 0pt;
+            font-size: 10px;
+            float: left;
+            text-align: left;
+            font-family: arial, helvetica, sans-serif;
+            line-height: 1;
+        }
+        
+        .logradiobtn {
+            float: left;
+        }
+        
+        .linkCrop {
+            margin: 0;
+            width: 150px;
+            overflow: hidden;
+            float: left;
+            text-overflow: ellipsis;
+            -o-text-overflow: ellipsis;
+        }
+        
+        .bPageBlock {
+            border-top: none !important;
+            background-color: white !important;
+        }
+        
+        textarea {
+            border-radius: 3px;
+            -webkit-transition: box-shadow .3s;
+            transition: box-shadow .3s;
+        }
+        
+        textarea:focus {
+            box-shadow: 0px 0px 4px #82BFD4;
+        }
+        
+        .inputCLead {
+            -webkit-transition: box-shadow .3s;
+            transition: box-shadow .3s;
+            box-shadow: 0px 0px 4px #82BFD4;
+        }
+    </style>
+    <style>
+        /* Send To Phone     
+---------------------------------------------------------------------------------*/
+        
+        .send-to-phone-wrapper {
+            width: 198px;
+            margin: 0 auto;
+        }
+        
+        .send-to-phone {
+            width: 198px;
+            padding: 0px;
+            background-color: #000;
+            box-shadow: 0px 10px 30px #000;
+            -webkit-box-shadow: 0px 10px 30px #000;
+            -moz-box-shadow: 0px 10px 30px #000;
+        }
+        
+        .phone-top {}
+        
+        .phone-disable-keypress {
+            height: 73px;
+            width: 198px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+        
+        .buttons-wrapper {
+            width: 197px;
+            height: 255px;
+            background-color: #000;
+            border-right: 1px solid #2d3136;
+        }
+        
+        .phone-button {
+            float: left;
+            text-align: center;
+            border-bottom: 1px solid #2d3136;
+            border-left: 1px solid #2d3136;
+            border-right: 1px solid #151b22;
+            position: relative;
+        }
+        
+        .phone-button-fix {
+            float: left;
+            text-align: center;
+            border-bottom: 1px solid #2d3136;
+            border-left: 1px solid #2d3136;
+            border-right: 1px solid #151b22;
+            position: relative;
+            height: 66px;
+            width: 105px;
+        }
+        
+        .phone-button p {
+            color: #FFF;
+            font-size: 20px;
+            padding-top: 5px;
+            font-family: Arial, Helvetica, sans-serif;
+            font-weight: normal;
+            line-height: 15px;
+            margin: 0;
+        }
+        
+        .phone-button span {
+            color: #878b90;
+            font-size: 10px;
+            text-shadow: 0px -1px 0px #000;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        
+        .phone-button a:link,
+        .phone-button a:visited {
+            text-decoration: none;
+            display: block;
+            height: 40px;
+            width: 63px;
+            padding-top: 20px;
+        }
+        
+        .phone-button a:hover {
+            text-decoration: none;
+        }
+        
+        .phone-button a:active {
+            background-image: none;
+            background-color: #3559c3;
+        }
+        
+        .phone-button a:hover span {
+            color: #9ac2fa;
+        }
+        
+        .phone-button a:active p {
+            text-shadow: 0px 0px 5px #000;
+        }
+        
+        .phone-star {
+            height: 24px;
+            width: 25px;
+            margin: 0 auto 2px auto;
+        }
+        
+        .phone-pound {
+            height: 24px;
+            width: 25px;
+            margin: 0 auto 2px auto;
+        }
+        
+        .phone-enter-number {
+            border: none;
+            text-align: center;
+            text-valign: middle;
+            font-size: 20px;
+            font-weight: normal;
+            padding-top: 5px;
+            font-family: Arial, Helvetica, sans-serif;
+            height: 30px;
+            width: 160px;
+            background-color: #fff;
+        }
+        
+        .choose-carrier-wrapper {
+            height: 28px;
+            position: relative;
+            width: 197px;
+        }
+        
+        .choose-carrier {
+            width: 40px;
+            overflow: hidden;
+        }
+        
+        .choose-carrier-selections {
+            border: none;
+            color: #FFF;
+            font-family: Arial, Helvetica, sans-serif;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 197px;
+            height: 0px;
+            padding-top: 0px;
+            padding-left: 0px;
+            cursor: pointer;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            font-size: 14px;
+            font-weight: bold;
+            background-color: #000;
+            color: #fff;
+        }
+        
+        .choose-carrier-selections:hover {
+            background-position: 0px -63px;
+        }
+        
+        .choose-styled {}
+        
+        .submit-phone {
+            height: 0px;
+            width: 107px;
+            border: none;
+            position: absolute;
+            top: -1px;
+            right: 0;
+            cursor: pointer;
+        }
+    </style>
+
+    <style>
+        /* Send To Phone
+---------------------------------------------------------------------------------*/
+        
+        .send-to-phone-wrapperG {
+            width: 198px;
+            margin: 0 auto;
+        }
+        
+        .send-to-phoneG {
+            width: 198px;
+            padding: 0px;
+            background-color: #B3B3B3;
+        }
+        
+        .phone-topG {}
+        
+        .phone-disable-keypressG {
+            height: 40px;
+            width: 198px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+        
+        .buttons-wrapperG {
+            width: 197px;
+            height: 245px;
+            background-color: #B3B3B3;
+            border-right: 1px solid #D3D3D3;
+        }
+        
+        .phone-buttonG {
+            float: left;
+            text-align: center;
+            border-bottom: 1px solid #D3D3D3;
+            border-left: 1px solid #D3D3D3;
+            border-right: 1px solid #D3D3D3;
+            position: relative;
+        }
+        
+        .phone-button-fixG {
+            float: left;
+            text-align: center;
+            border-bottom: 1px solid #D3D3D3;
+            border-left: 1px solid #D3D3D3;
+            border-right: 1px solid #D3D3D3;
+            position: relative;
+            height: 40px;
+            width: 40px;
+        }
+        
+        .phone-buttonG p {
+            color: #FFF;
+            margin: 0;
+            font-size: 20px;
+            font-family: Arial, Helvetica, sans-serif;
+            line-height: 15px;
+        }
+        
+        .phone-buttonG span {
+            color: #ffffff;
+            font-size: 10px;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        
+        .phone-buttonG a:link,
+        .phone-button a:visited {
+            text-decoration: none;
+            display: block;
+            height: 40px;
+            width: 63px;
+            padding-top: 20px;
+        }
+        
+        .phone-buttonG a:hover {
+            text-decoration: none;
+        }
+        
+        .phone-buttonG a:active {
+            background-image: none;
+            background-color: #3559c3;
+        }
+        
+        .phone-buttonG a:hover span {
+            color: #F0F0F0;
+        }
+        
+        .phone-buttonG a:active p {
+            text-shadow: 0px 0px 5px #000;
+        }
+        
+        .phone-starG {
+            height: 24px;
+            width: 25px;
+            margin: 0 auto 2px auto;
+        }
+        
+        .phone-poundG {
+            height: 24px;
+            width: 25px;
+            margin: 0 auto 2px auto;
+        }
+        
+        .phone-enter-numberG {
+            border: none;
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+            text-shadow: 0px 2px 0px #fff;
+            font-family: Arial, Helvetica, sans-serif;
+            height: 40px;
+            width: 63px;
+            background-color: #fff;
+        }
+        
+        .choose-carrier-wrapperG {
+            position: relative;
+            width: 197px;
+        }
+        
+        .choose-carrierG {
+            width: 40px;
+            overflow: hidden;
+        }
+        
+        .choose-carrier-selectionsG {
+            border: none;
+            color: #F0F0F0;
+            font-family: Arial, Helvetica, sans-serif;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 197px;
+            height: 0px;
+            padding-top: 0px;
+            padding-left: 0px;
+            cursor: pointer;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            font-size: 14px;
+            font-weight: bold;
+            background-color: #B3B3B3;
+            color: #F0F0F0;
+        }
+        
+        .choose-carrier-selectionsG:hover {
+            background-position: 0px -63px;
+        }
+        
+        .choose-styledG {}
+        
+        .submit-phoneG {
+            height: 0px;
+            width: 107px;
+            border: none;
+            position: absolute;
+            top: -1px;
+            right: 0;
+            cursor: pointer;
+        }
+        
+        .headerSectionP {
+            font-family: Arial, Helvetica, sans-serif;
+            padding-top: 2px;
+            padding-left: 2px;
+            color: #ffffff;
+            height: 30px;
+            font-size: 22px;
+            font-weight: normal;
+            margin: 0px;
+            width: 198px;
+        }
+        
+        .headerDialerP {
+            background-color: #000000;
+            padding: 0px;
+            float: right;
+            margin: 3px;
+            padding-right: 2px;
+        }
+        
+        .wtldiv {
+            border: 1px solid gray;
+            background-color: white;
+            width: 90%;
+            height: 17px;
+            margin-left: 5px;
+            margin-bottom: 3px;
+            border-radius: 3px;
+            -webkit-border-radius: 3px;
+        }
+        
+        .wtlCrossImg {
+            cursor: pointer;
+            visibility: hidden;
+            float: right;
+            vertical-align: middle;
+            padding-right: 1px;
+            padding-top: 3px;
+        }
+        
+        .createNewConP {
+            margin-top: 4px;
+            margin-left: 74px;
+            font-size: 9px;
+            color: skyblue;
+        }
+        
+        .createNewLeadP {
+            margin-top: 4px;
+            font-size: 10px;
+            color: skyblue;
+            vertical-align: middle;
+            cursor: pointer;
+            margin-left: 20px;
+        }
+        
+        .count {
+            font-size: 11px;
+            font-weight: bold;
+            width: 65px;
+            margin-left: 120px !important;
+        }
+        
+        .status {
+            font-size: 11px;
+            font-weight: bold;
+            width: 74px;
+            float: left;
+            margin-left: 9px !important;
+        }
+        
+        .widgetNumber {
+            <!--display: none;
+            -->
+        }
+        
+        .createLead input {
+            display: block;
+            border: 1px solid lightgrey;
+            padding: 3px;
+            margin: 5px;
+            width: 150px;
+        }
+        
+        .createLead p {
+            display: block;
+            padding: 2px;
+            margin: 10px 0 0 5px;
+            width: 120px;
+        }
+        
+        .createLead {
+            margin-top: 15px;
+            width: 174px;
+            height: 222px;
+            border: 1px solid #C6C6C6;
+        }
+        
+        .btnSave {
+            background-color: #C6C6C6;
+            border: 1px outset lightgrey;
+            padding: 3px;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+        }
+        
+        .borderInset {
+            border-style: inset !important;
+        }
+        
+        .req {
+            border: 1px solid red;
+            width: 0px !important;
+            height: 20px;
+            padding: 0 !important;
+            float: left;
+            margin-top: 5px !important;
+            vertical-align: center;
+        }
+        
+        hr {
+            border-color: rgb(203, 203, 202) !important;
+            border-top: 0px;
+        }
+    </style>
+    
+    
+    <apex:form >
+        <div id="softphonePanel" style="border:1px solid #f5f5f4;border-top-left-radius:8px;border-top-right-radius:8px; width:198px; background-color:#ffffff;">
+            <apex:actionRegion >
+                <apex:actionFunction name="PageLoadSearch" action="{!HistorySearchTab}" reRender="resultBlock" oncomplete="historyScroll();">
+                    <apex:param name="parm" value="" assignTo="{!contactName}" />
+                </apex:actionFunction>
+            </apex:actionRegion>
+            <apex:actionFunction name="apexMethod" action="{!HistorySearchTab}" reRender="op5" oncomplete="historyScroll();">                
+            </apex:actionFunction>
+                                 
+            <apex:actionRegion >
+                <!-- Save History Log using action function -->
+                <apex:actionFunction name="createNewContact" action="{!createNewContact}" oncomplete="outgoingWTL('{!currentrecordId}','{!phoneNumber}','');" reRender="opp">
+                    <apex:param name="parm1" value="" assignTo="{!whatId}" />
+                    <apex:param name="parm2" value="" assignTo="{!phoneNumber}" />
+                </apex:actionFunction>
+            </apex:actionRegion>
+
+            <apex:actionRegion >
+                <!-- Save History Log using action function -->
+                <apex:actionFunction name="createNewLead" action="{!createNewLead}" oncomplete="outgoingWTL('{!currentrecordId}','{!phoneNumber}','');" reRender="opp">
+                    <apex:param name="parm1" value="" assignTo="{!logRecordId}" />
+                    <apex:param name="parm2" value="" assignTo="{!phoneNumber}" />
+                    <apex:param name="parm3" value="" assignTo="{!firstName}" />
+                    <apex:param name="parm4" value="" assignTo="{!lastName}" />
+                    <apex:param name="parm5" value="" assignTo="{!companyName}" />
+                </apex:actionFunction>
+
+            </apex:actionRegion>
+
+            <apex:actionRegion >
+                <!-- Save History Log using action function -->
+                <apex:actionFunction name="reAssignLog" action="{!reAssignLog}" reRender="opp">
+                    <apex:param name="parm1" value="" assignTo="{!whoId}" />
+                    <apex:param name="parm2" value="" assignTo="{!whatId}" />
+                    <apex:param name="parm3" value="" assignTo="{!logRecordId}" />
+                </apex:actionFunction>
+
+            </apex:actionRegion>
+
+            <!-- Save History Log using action function -->
+            <apex:actionFunction name="saveLog" action="{!saveLog}" reRender="opp">
+                <apex:param name="parm1" value="" assignTo="{!logRecordId}" />
+                <apex:param name="parm2" value="" assignTo="{!logOutCome}" />
+                <apex:param name="parm3" value="" assignTo="{!CallResult}" />
+                <apex:param name="parm7" value="" assignTo="{!timeInitiated}" />
+                <apex:param name="parm8" value="" assignTo="{!callId}" />
+            </apex:actionFunction>
+
+            <!-- Save History Log using action function -->
+            <apex:actionFunction name="updateTask" action="{!updateTask}" reRender="opp">
+                <apex:param name="parm1" value="" assignTo="{!timeInitiated}" />
+                <apex:param name="parm2" value="" assignTo="{!callId}" />
+                <apex:param name="parm3" value="" assignTo="{!logRecordId}" />
+                <apex:param name="parm4" value="" assignTo="{!CallDurationInSeconds}" />
+            </apex:actionFunction>
+
+            <!-- Save Create Log using action function -->
+            <apex:actionFunction name="createLog" action="{!createLog}" oncomplete="moveWTLdivFun('{!logRecordId}');putBtnTaskId('{!logRecordId}', '{!widCounter}');outgoingWTL('{!currentrecordId}', '{!phoneNumber}', '');" reRender="opp">
+                <apex:param name="parm1" value="" assignTo="{!whoId}" />
+                <apex:param name="parm2" value="" assignTo="{!whatId}" />
+                <apex:param name="parm3" value="" assignTo="{!callType}" />
+                <apex:param name="parm4" value="" assignTo="{!CallDurationInSeconds}" /> 
+                <apex:param name="parm5" value="" assignTo="{!description}" />
+                <apex:param name="parm6" value="" assignTo="{!phoneNumber}" />
+                <apex:param name="parm7" value="" assignTo="{!widCounter}" />
+                <apex:param name="parm8" value="" assignTo="{!inboundCallId}" />
+            </apex:actionFunction>
+
+            <apex:actionRegion >
+                <apex:actionFunction name="outgoingWTL" action="{!WhereToLog}" oncomplete="WtcContent();" reRender="hover12,wTLogBlock">
+                    <apex:param assignTo="{!currentrecordId}" name="currentrecordId" value="" />
+                    <apex:param assignTo="{!phoneNumber}" name="callingTo" value="" />
+                    <apex:param assignTo="{!WhereToLogName}" name="WhereToLogName" value="" />
+                </apex:actionFunction>
+            </apex:actionRegion>
+
+            <apex:actionRegion >
+                <apex:actionFunction name="getTaskId" action="{!getTaskId}" oncomplete="createWidget('{!currentrecordId}','{!counter}','{!phoneNumber}','{!currentRecName}','{!logRecordId}');triggerConnected('connected');" reRender="hover12,wTLogBlock">
+                    <apex:param assignTo="{!timeInitiated}" name="timeInitiated" value="" />
+                    <apex:param assignTo="{!phoneNumber}" name="phoneNumber" value="" />
+                    <apex:param assignTo="{!counter}" name="counter" value="" />
+                </apex:actionFunction>
+            </apex:actionRegion>
+
+
+            <apex:actionRegion >
+                <apex:actionFunction name="searchName" action="{!searchPhoneNumber}" oncomplete="setName('{!pNSearchedName}','{!currentrecordId}');" reRender="widDiv">
+                    <apex:param assignTo="{!phoneNumber}" name="phoneNumber" value="" />
+                </apex:actionFunction>
+            </apex:actionRegion>
+
+            <apex:actionRegion >
+                <apex:actionFunction name="moveWTLdiv" oncomplete="PageLoadSearch();" reRender="hover12,wTLogBlock">
+
+                </apex:actionFunction>
+            </apex:actionRegion>
+
+
+            <apex:actionRegion >
+                <apex:actionFunction name="onHistoryWTL" action="{!WhereToLog}" oncomplete="WtcContent();" reRender="hover12,wTLogBlock">
+                    <apex:param assignTo="{!currentrecordId}" name="parmCurrentrecordId" value="" />
+                    <apex:param assignTo="{!phoneNumber}" name="callingTo" value="" />
+                    <apex:param assignTo="{!WhereToLogName}" name="WhereToLogName" value="" />
+                </apex:actionFunction>
+            </apex:actionRegion>
+
+            <apex:actionRegion >
+                <apex:actionFunction name="WCLSearch" action="{!WhereToLog}" reRender="hover12,wTLogBlock" oncomplete="clearContents('.cross1');WtcContent();">
+                    <apex:param name="parm" value="" assignTo="{!WhereToLogName}" />
+                </apex:actionFunction>
+            </apex:actionRegion>
+
+            <!-- Starts Header Section#41AAD3-->
+            <div id="HeaderSection" style="padding-top:0px; margin-top:0px;">
+                <!-- Header -->
+                <div style="width:198px;  background-color:#f5f5f4;  border-radius:7px; -webkit-border-radius:7px;">
+
+                    <p class="headerSectionP">
+                        <a href="/apex/ManageUsersTab" target="_blank" style="float:right; margin-right:10px;">
+                            <apex:image url="{!urlfor($Resource.ClickToDial__ClickToDialImageResources,'images/svg/tools.svg')}" width="14" height="14" />
+                        </a>
+                            <apex:image url="{!urlfor($Resource.ClickToDial__ClickToDialImageResources,'images/svg/old-phone.svg')}" style="float:left; margin-left:5px; padding-top:6px;" width="14" height="14" />
+                        
+                    </p>
+                </div>
+                <!-- Header Ends -->
+            </div>
+            <!--Header Section Ends-->
+            <!--Call Section Starts-->
+
+            <div class="callWidget" width="198px" style="display:none;padding-top:0px; margin-top:0px; background-color:#ffffff;">
+
+                <!-- Call widget -->
+
+                <div id="widDiv" class="widDiv">
+                </div>
+                <!-- Ends Call widget -->
+               
+            </div>
+            <!-- Ends Call Section-->
+
+            <!--Starts History Section-->
+
+            <div id="HistoryPanal" style="padding-top:0px; margin-top:4px;background-color:#ffffff">
+
+                <!-- Starts History Header -->
+                <div style="width:198px; height: 30px; padding-top:0px; margin-top:0px; background-color:#f5f5f4;  border-radius:7px; -webkit-border-radius:7px;">
+                    <!-- History Header -->
+                    <div class="recentHisDiv" style="height:32px; padding-top:8px; padding-left: 5px; margin:0px; width:198px;">
+                        <span style=" color: #000000;  font-size: 12px;">Recent Activity </span>
+                        <p style="float: right; margin: 0; height: 25px; padding-right: 2px;">
+                            <a href="#" class="hSearch" target="_self" style="  padding-right:5px; padding-bottom:5px;">
+                                <apex:image style="float:left;margin-right:-3px" height="14px" width="14px" url="{!urlfor($Resource.ClickToDial__ClickToDialImageResources,'images/svg/database.svg')}" />
+                            </a>
+                            <a href="/apex/ActivitiesTab" target="_blank" style=" padding-right:8px; padding-bottom:5px;">
+                                <apex:image height="14px" width="14px" url="{!urlfor($Resource.ClickToDial__ClickToDialImageResources,'images/svg/log-out.svg')}" />
+                            </a>
+                        </p>
+
+                    </div>
+
+                    <!-- Search Input -->
+                    <div class="searchDiv" style="height:32px !important; display:none; padding-top:5px">
+                        <apex:image height="14px" width="14px" url="{!URLFOR($Resource.ClickToDial__ClickToDialImageResources,'images/svg/database.svg')}" style="float:left; margin-left: 2px;margin-top: 2px;" />
+                        <div style="height:17px;">
+                            <div style="border:1px solid gray;float:left;margin-left: 3px;background-color:white;margin-bottom:3px; width:79%; border-radius:6px; -webkit-border-radius:6px;">
+                                <apex:inputText value="{!ContactName}" id="contactName" alt="Search" styleClass="hSearch">
+
+                                    <apex:actionSupport action="{!HistorySearchTab}" event="onkeyup" rerender="resultBlock" oncomplete="moveWTLdivOnSearch();historyScroll();" />
+
+                                </apex:inputText>
+                            </div>
+                            <apex:image url="{!URLFOR($Resource.ClickToDial__ClickToDialImageResources,'images/svg/cycle.svg')}" alt="reset" styleClass="cross" width="14px" height="14px" style="cursor:pointer;float:right;vertical-align:middle;padding-right:3px;margin-top: 2px;" />
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Ends HistoryHeader -->
+
+                <!-- Starts History Records -->
+
+                <div style="width:198px; background-color:#ffffff;">
+
+                    <div style="width:198px;   background-color:#ffffff; ">
+
+                        <div id="tabs-3" style="height:390px;padding:3px 3px 0 3px !important">
+
+
+                            <apex:outputPanel id="resultBlock">
+                                <script type="text/javascript">
+                                    var incHist = 15;
+                                    var hist;
+                                    var historyDiv = document.getElementById('hover9');
+
+                                    function historyScroll() {
+                                        historyDiv.innerHTML = '';
+                                        hist = new Array();
+                                        //console.log('{!history}');
+                                        if ('{!history}'.indexOf("OtherNumber") == -1) {
+                                            hist1 = new Array();
+                                            hist1 = '{!history}'.replace('[', '').split('##');
+                                            for (var k = hist1.length - 1; k >= 0; k--) {
+                                                hist.push(hist1[k]);
+                                            }
+                                        } else {
+                                            hist = '{!history}'.replace('[', '').split('##');
+                                        }
+                                        for (var i = 0; i < 15; i++) {
+                                            try {
+                                                var history = new Array();
+                                                history = hist[i].replace('[', '').replace(']', '').split('%');
+                                                if (history[5] == 'History') {
+                                                    skypeTabContent(history[1], history[5], history[2], '#history#', 'scrollContainerhistory', history[6], history[3], history[7], history[4], history[8], i.toString(), history[9]);
+                                                } else {
+                                                    if (history[2] == 'null') {
+                                                        history[2] = 'Not Availiable';
+                                                    }
+                                                    if (history[3] == 'null') {
+                                                        history[3] = 'Not Availiable';
+                                                    }
+                                                    skypeTabContent(history[0], history[3], history[1], '#hisSearch#', 'scrollContainerhistory', '', history[2], '', history[4], '', i.toString(), history[9]);
+                                                }
+                                            } catch (err) {
+                                                // Raven.captureException(err);
+                                            }
+                                        }
+                                    }
+
+                                    function LoadCallbackH() {
+                                        var sizehistory = hist.length;
+                                        var loading = document.getElementById('loadingDivhistory');
+                                        if (incHist >= sizehistory) {
+                                            loading.style.visibility = 'hidden';
+                                            return;
+                                        }
+                                        loading.style.display = 'none';
+                                        for (var i = incHist; i < incHist + 10; i++) {
+                                            try {
+                                                var history = new Array();
+                                                history = hist[i].replace('[', '').replace(']', '').split('%');
+                                                if (history[5] == 'History') {
+                                                    skypeTabContent(history[1], history[5], history[2], '#history#', 'scrollContainerhistory', history[6], history[3], history[7], history[4], history[8], i.toString(), history[9]);
+                                                } else {
+                                                    if (history[2] == 'null') {
+                                                        history[2] = 'Not Availiable';
+                                                    }
+                                                    if (history[3] == 'null') {
+                                                        history[3] = 'Not Availiable';
+                                                    }
+                                                    skypeTabContent(history[0], history[3], history[1], '#hisSearch#', 'scrollContainerhistory', '', history[2], '', history[4], '', i.toString(), history[9]);
+                                                }
+                                            } catch (err) {
+                                                // Raven.captureException(err);
+                                                console.log(err);
+                                            }
+                                        }
+                                        incHist = incHist + 10;
+                                    }
+                                    $(function() {
+                                        $('.scrlhis').slimScroll({
+                                            width: '100%',
+                                            height: '99%',
+                                            railVisible: true,
+                                            railColor: '#fff',
+                                            size: '4px',
+                                            distance: '-2px'
+                                        });
+                                    });
+                                </script>
+                                <div class="scrlhis" style="background-color:#F5F4F1 !important;text-align:left" onscroll="scrolldiv('scrollContainerhistory', 'loadingDivhistory', LoadCallbackH);" id="scrollContainerhistory">
+                                    <div style="margin-top: -10px;background-color:#F5F5F4 !important">
+                                        <p id="hover9" style="font-family:  Arial,?Helvetica,?sans-serif; font-size:11px">
+                                        </p>
+                                        <div style="padding: 5px; position: absolute; bottom: 2px; right: 20px; display: none; color: Grey;" id="loadingDivhistory">Loading...</div>
+                                    </div>
+                                </div>
+                            </apex:outputPanel>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- Ends History Records -->
+            </div>
+
+            <!--Ends History Section -->
+        </div>
+
+        <!-- Ends SoftPhone -->
+
+    </apex:form>
+    <script>
+        $(function() {
+            var i = 0;
+            var num = [];
+
+            $(".buttons-wrapper a").click(function(e) {
+                e.preventDefault();
+                if ($("#phone").val() == '') {
+                    num = [];
+                    i = 0;
+                }
+                if ($(this).attr("href") == "clear") {
+                    num = [];
+                    $("#phone").val(num);
+                    i = 0;
+                } else if ($(this).attr("href") == "delete") {
+                    i--;
+                    var str = $("#phone").val();
+                    //console.log(str);
+                    if (num.length == 10) {
+                        str = str.substring(0, str.length - 3).substring(1, str.length);
+                    } else if (num.length == 10) {
+                        str = str.substring(0, str.length - 2);
+                    } else {
+                        str = str.substring(0, str.length - 1);
+                    }
+                    $("#phone").val(str);
+                    num.splice(i, 1);
+                } else {
+                    if (num.length <= 12) {
+
+                        num[i] = $(this).attr("href");
+                        if (num[i] == '0') {
+                            if (e.target.nodeName != 'SPAN') {
+                                $("#phone").val($("#phone").val() + num[i]);
+                            } else {
+                                num[i] = $("span", this).text();
+                                $("#phone").val($("#phone").val() + num[i]);
+                            }
+
+                        } else {
+                            $("#phone").val($("#phone").val() + num[i]);
+                        }
+                        i++;
+                    }
+                }
+
+
+            });
+        });
+
+        $(function() {
+
+            $(".buttons-wrapperG a").click(function(e) {
+                e.preventDefault();
+                var dtmf = $(this).attr("href");
+                sendDTMF(dtmf);
+            });
+        });
+    </script>
+
+   
+    <script>
+        $(document).ready(function() {
+              disableSoftphoneInStandardApp = false;
+             sforce.interaction.cti.enableClickToDial();
+            $(".headerdialer").click(function() {
+                var did = $(".headerDialerDiv").css("display");
+                if (did == "block") {
+                    $(".headerDialerDiv").css("display", "none");
+                } else {
+                    $(".callDialerDiv").css("display", "none");
+                    $(".callsDiv").css("display", "none");
+                    $(".headerDialerDiv").css("display", "block");
+                }
+
+            });
+
+            $(".hSearch").click(function() {
+                var did = $(".searchDiv").css("display");
+                if (did == "none") {
+                    $(".recentHisDiv").css("display", "none");
+                    $(".searchDiv").css("display", "block");
+                }
+                $('.hSearch').focus();
+
+            });
+
+            $(".cross").click(function() {
+                var did = $(".searchDiv").css("display");
+                if (did == "block") {
+                    $(".searchDiv").css("display", "none");
+                    $(".recentHisDiv").css("display", "block");
+                    PageLoadSearch('');
+                }
+
+            });
+
+            $(".logDivfixed").click(function() {
+                var did = $(".callNotesDiv").css("display");
+                if (did == "block") {
+                    $(".callNotesDiv").css("display", "none");
+                } else {
+                    $(".headerDialerDiv").css("display", "none");
+                    $(".callDialerDiv").css("display", "none");
+                    $(".callNotesDiv").css("display", "block");
+                }
+
+            });
+          sforce.interaction.cti.onClickToDial(clickToDialCallback);
+        });
+    </script>
+
+    <script>
+        disableSoftphoneInStandardApp = false;
+
+        function setIntervalSB(tm) {
+            var intval = self.setInterval(function() {
+                setSalesampHeight();
+            }, 10);
+            setTimeout(function() {
+                clearInterval(intval)
+            }, tm);
+        }
+        $(window).blur(function() {
+            setIntervalSB(1000);
+        });
+
+        setIntervalSB(10000);
+        function setSalesampHeight() {
+            try {
+                sforce.interaction.isInConsole(callbackC);
+                var layerHight = $('.layer1').height();
+                if (layerHight != null && layerHight != undefined)
+                    sforce.interaction.cti.setSoftphoneHeight(layerHight + 40);
+
+            } catch (e) {
+                // Raven.captureException(e);
+            }
+        }
+        //Hide-unhide cross icon on search.
+        function displaycross(inputId, clsname) {
+            var iChars = "+1234567890()";
+            var isPhoneNo = 0;
+            var inpval = document.getElementById(inputId).value;
+            for (var i = 0; i < inpval.length; i++) {
+                if (iChars.indexOf(inpval.charAt(i)) == -1) {
+                    isPhoneNo = 1;
+                }
+            }
+            if (inpval != '') {
+                if (isPhoneNo != 1) {
+                    var sr = "{!URLFOR($Resource.ClickToDial__ClickToDialImageResources,'images/svg/phone.svg')}";
+                    $(clsname).attr("src", sr);
+                    $(clsname).css("visibility", "visible");
+                } else {
+                    var sr = "{!URLFOR($Resource.ClickToDial__ClickToDialImageResources,'images/svg/cycle.svg')}";
+                    $(clsname).attr("src", sr);
+                    $(clsname).css("visibility", "visible");
+                }
+            } else {
+                $(clsname).css("visibility", "hidden");
+            }
+        }
+
+
+        try {            
+            setIntervalSB(8000);
+            PageLoadSearch();
+            sforce.interaction.cti.enableClickToDial();           
+        } catch (e) {
+
+        }
+
+        function getPageInfo() {
+            sforce.interaction.getPageInfo(callback);
+        }
+
+        var callback = function(response) {
+            console.log('Callback Function Called');
+            if (response.result) {
+                var result = JSON.parse(response.result);
+                apexMethod();
+                }            
+        };
+
+        
+       
+        
+        function clickToDialCallback(response) {
+            sforce.interaction.setVisible(true);
+            var result = JSON.parse(response.result);   
+            console.log("===result==="+result);         
+            Call('', '', Encoder.htmlEncode(result.number), result.objectId, '#history#', true, 'Contact');                         
+              
+        }
+
+        function EndCall(div) {
+            var cid = $("#" + div + " .callEnd img").attr('data-callid');
+            endACall(TransectionId, cid);
+            
+            $(".callDialerDiv").css("display", "none");
+            $("#incDiv").css("display", "none");
+        }
+
+        function AnswerCall(div) {
+            var cid = $("#" + div + " .callAnswer img").attr('data-callid');
+            answerACall(cid);
+            
+        }
+
+
+        //toggle call status (pause and start);
+        function toggleCall(dv, fg, status) {
+            try {
+                var fDiv = $("#" + dv + " .wdgtFooter");
+
+                var sr = $("#" + dv + " .callPlay img").attr("src");
+                $("#" + dv + " a").removeClass("show");
+                var cid = $("#" + dv + " .callPlay img").attr('data-callid');
+
+                var eurl;
+                if (status == "connecting") {
+
+                } else if (status == "connected") {
+                    $(fDiv).css("background-color", "#C6C6C6");
+                    $("#" + dv + " a").addClass("show");
+                    $("#" + dv + " a.callAnswer").removeClass("show");
+                    try {
+                        eurl = sr.replace("Start", "Pause");
+                        $("#" + dv + " .callPlay img").attr("src", eurl);
+                    } catch (e) {}
+
+                } else if (status == "hold") {
+                    
+                    //alwarys hide extenstion dialer on hold status.                   
+                    //alwarys hide call log section on hold status.
+                    $("#" + dv + " .callLog").css("display", "none");
+                    if (sr.indexOf('Pause') != -1) {
+                        $("#" + dv + " a.callPlay").addClass("showCallPlay");
+                        $(fDiv).css("background-color", "gray");
+                        eurl = sr.replace("Pause", "Start");
+                        if (fg) {
+                            holdACall(TransectionId, cid);
+                        }
+
+                    } else {
+                        eurl = sr.replace("Pause", "Start");
+                        if (fg) {
+                            eurl = sr.replace("Start", "Pause");
+                            $("#" + dv + " a").addClass("show");
+                            $("#" + dv + " a.callAnswer").removeClass("show");
+                            resumeACall(TransectionId, cid);
+                            $(fDiv).css("background-color", "#C6C6C6");
+                        }
+                    }
+                    $(".calldialer").css("display", "none");
+                    $(".divWdg").css("display", "none");
+                    
+                    $("#" + dv + " .callPlay img").attr("src", eurl);
+                } else if (status == "ringing") {
+                    $("#" + dv + " a.callAnswer").addClass("show");
+                }
+            } catch (e) {};
+
+        }
+
+        function StartCall() {
+            $(".calldialer").css("display", "none");
+            try {
+                var im = $(".callPlay img")[0];
+                var url = $(im).attr("src");
+                var eurl = url.replace("Pause", "Start");
+                $(".callPlay img").attr("src", eurl);
+                $(".callPlay").addClass("show");
+            } catch (e) {
+            }
+            $(".wdgtFooter").css("background-color", "gray");
+            $(".callWidget").css("display", "block");
+            $(".headerDialerDiv").css("display", "none");
+        }
+
+        function scrolldiv(scrollContainer, loadingdiv, func) {
+            var el = document.getElementById(scrollContainer);
+            if (el.scrollTop < el.scrollHeight - el.clientHeight)
+                return;
+            var loading = document.getElementById(loadingdiv);
+            if (loading.style.display == '')
+                return;
+            loading.style.display = '';
+            LoadMoreElements(func);
+        }
+
+        function LoadMoreElements(LoadCallbackFuc) {
+            setTimeout(LoadCallbackFuc, 350);
+        }
+
+        String.prototype.trim = function() {
+            return this.replace(/^\s+|\s+$/g, "");
+        };
+        String.prototype.putcharAt = function(index, char) {
+            return this.substr(0, index) + char + this.substr(index);
+        }
+        var flag = 1;
+
+        function isNumber(n) {
+            return !isNaN(parseFloat(n)) && isFinite(n);
+        }
+
+        //set hover position in sidebar. 
+        function hoverPosition(th, htmlElementId) {
+            var pointerY = $(th).offset().top;
+            var divTop = $('#' + htmlElementId).offset().top;
+            var toPP = String((pointerY - divTop) + 19) + "px";
+            $('span.comment').attr('style', 'top:' + toPP);
+        }
+
+        function removeCls(id) {
+            $('#' + id).removeClass('inputCLead');
+        }
+
+        function createLead() {
+          
+        }
+
+
+
+        function showCallDialer(unumber) {
+            var did = $(".callDialerDiv").css("display");
+            $(".divWdg").css("display", "none");
+            $(".callDialerDiv").css("display", "none");
+            if (did == "block") {
+                $(".callDialerDiv").css("display", "none");
+            } else {
+                $('#incDiv').css("display", "none");
+                var dv = $('#mWDiv' + unumber);
+                var dialerDiv = $(".callDialerDiv");
+                $(dialerDiv).css("display", "block");
+                $(dialerDiv).insertAfter(dv);
+                $(".headerDialerDiv").css("display", "none");
+
+            }
+
+        }
+
+        //function to show log a call section in history
+        function showLogCall(imgLogid, isWedget) {
+            
+            var x = document.getElementById('imgL'+imgLogid).src;          
+            var pos = x.search("UpArrow");
+            var imgl = document.getElementById('imgL'+imgLogid);
+            if(pos  == '-1')
+            {
+            imgl.setAttribute("src", "{!urlfor($Resource.ClickToDial__ClickToDialImageResources,'images/svg/upload.svg')}");
+            }
+            else
+            {
+              imgl.setAttribute("src", "{!urlfor($Resource.ClickToDial__ClickToDialImageResources,'images/svg/download.svg')}");
+            }
+            var dv;
+            var did;
+            $(".callDialerDiv").css("display", "none");
+            if (!isWedget) {
+                dv = $('#mdiv' + imgLogid.replace('mdiv', ''));
+                did = $(dv).css("display");                
+            } else {
+                dv = $('#mWDiv' + imgLogid);
+                did = $('#divWdg' + imgLogid).css("display");
+            }
+
+            //console.log(dv);
+            $(".divWdg").css("display", "none");
+            $("#incDiv").css("display", "none");
+            if (did == "block") {
+                if (!isWedget) {
+                    $(dv).css("display", "none");
+                } else {
+                    $('#divWdg' + imgLogid).css("display", "none");
+                }
+                $('#incDiv').css("display", "none");            
+            } else {                
+                $(".mdivClass").css("display", "none");                
+                if (!isWedget) {
+                    $(dv).css("display", "block");
+                } else {
+                    $('#divWdg' + imgLogid).css("display", "block");
+                }
+                showWhereToLog(imgLogid, isWedget);
+            }
+            $('#createLead').css('display', 'none');
+            $('#wTLContent').css('display', 'block');
+
+        }
+
+        //Set position of the where to log section.
+        function showWhereToLog(unumber, isWedget) {
+
+            var dv, recId;
+            if (!isWedget) {
+                dv = $('#mdiv' + unumber.replace('mdiv', ''));
+                recId = $("#mdiv" + unumber).attr("data-rid");
+            } else {
+                dv = $('#mWDiv' + unumber);
+                recId = $("#divWdg" + unumber).attr("data-rid");
+            }
+            var incDiv =  $('#incDiv');
+            if(incDiv != undefined){
+                incDivClone = $(incDiv).clone(true,true);
+            }else{
+                incDiv = incDivClone;
+            }
+            var tkId = $('#btn' + unumber).attr("data-tkId");
+            $(incDiv).attr("data-tkId", tkId);
+            var number;
+            if (isWedget) {
+                number = $('.wdgtDescription .widgetNumber', dv).text();
+            } else {
+                number = $(dv).parent().find(".linkCrop a").text();
+            }
+            $(incDiv).attr("data-pn", number);
+
+            $(incDiv).insertAfter(dv);
+            $(incDiv).css("display", "block");
+            clearContents('.cross1');
+            onHistoryWTL(recId, number, '');
+
+        }
+
+        function moveWTLdivFun(logId) {
+            var incDiv =  $('#incDiv');
+            if(incDiv != undefined){
+                incDivClone = $(incDiv).clone(true,true);
+            }else{
+                incDiv = incDivClone;
+            }
+            var pid = $(incDiv).parent().parent().attr('id');
+            console.log('pid==' + pid);
+            if (pid == 'hover9') {
+                var wtlDiv = $('#widDiv');
+                $(".mdivClass").css("display", "none");
+                $(incDiv).css("display", "none");
+                $(incDiv).insertAfter(wtlDiv);
+                $(incDiv).attr("data-tkId", logId);
+            }
+            moveDivWTL();
+        }
+
+        function moveWTLdivOnSearch() {
+            moveDivWTL();
+        }
+        
+        function moveDivWTL() {            
+            var incDiv =  $('#incDiv');
+            if(incDiv != undefined){
+                incDivClone = $(incDiv).clone(true,true);
+            }else{
+                incDiv = incDivClone;
+            }
+            var pid = $(incDiv).parent().parent().attr('id');
+            console.log('pid==' + pid);
+            if (pid == 'hover9') {
+                var wtlDiv = $('#widDiv');
+                $(".mdivClass").css("display", "none");
+                $(incDiv).css("display", "none");
+                $(incDiv).insertAfter(wtlDiv);
+            }
+        }
+        
+        var incDivClone;        
+        //create widget.
+
+        function createWidget(recordId, unumber, pNumber, name, taskId) {
+             
+        }
+
+        function setIntervalWidget(tm, unumber) {
+            var intval = self.setInterval(function() {
+                getCallStatus();
+                $('#mWDiv' + unumber).attr("data-callid", CallId);
+                $('#mWDiv' + unumber + ' .wdgtFooter a img').each(function() {
+                    $(this).attr("data-callid", CallId);
+                });
+            }, 300);
+            setTimeout(function() {
+                clearInterval(intval)
+            }, tm);
+        }
+
+        //Dynamic Log a call section
+
+        function createLogCallSection(divToAppend, recordId, unumber, isWidget, taskId) {
+            var p1 = document.createElement('p');
+            p1.setAttribute("style", "margin-left:5px; font-size: 11px; font-weight:bold");
+            p1.innerHTML = "Call Outcome";
+            var br1 = document.createElement('br');
+            p1.appendChild(br1);
+            var sel = document.createElement('select');
+            sel.setAttribute("id", "select" + unumber);
+            sel.setAttribute("onchange", "showButton('btn" + unumber + "')");
+            sel.setAttribute("style", "width: 180px; height: 25px");
+            var opt = document.createElement('option');
+            opt.setAttribute("Callsuccessful", "Call successful");
+            opt.innerHTML = "Call successful";
+            sel.appendChild(opt);
+            
+            var opt1 = document.createElement('option');
+            opt1.setAttribute("leftvoicemail", "left voicemail");
+            opt1.innerHTML = "Left voicemail";
+            sel.appendChild(opt1);
+            
+            var opt2 = document.createElement('option');
+            opt2.setAttribute("addtodo-not-calllist", "add to do-not-call list");
+            opt2.innerHTML = "Add to do-not-call list";
+            sel.appendChild(opt2);
+            
+            var opt3 = document.createElement('option');
+            opt3.setAttribute("Numberoutofservice", "Number out of service");
+            opt3.innerHTML = "Number out of service";
+            sel.appendChild(opt3);
+            
+            p1.appendChild(sel);
+            var p2 = document.createElement('p');
+            p2.setAttribute("style", "margin-left:5px; font-size: 11px; font-weight:bold");
+            p2.innerHTML = "Notes";
+            var br2 = document.createElement('br');
+            p2.appendChild(br2);
+            var txta = document.createElement('textarea');
+            txta.setAttribute("onkeypress", "showButton('btn" + unumber + "')");
+            txta.setAttribute("id", "txta" + unumber);
+            txta.setAttribute("style", "width:174px;height:40px");
+            txta.setAttribute("cols", "20");
+            txta.setAttribute("rows", "2");
+            p2.appendChild(txta);
+            var pi = document.createElement('p');
+            var inp = document.createElement('input');
+            inp.setAttribute("id", "btn" + unumber);
+            inp.setAttribute("type", "submit");
+            inp.setAttribute("data-tkId", taskId);
+
+            if (!isWidget) {
+                inp.setAttribute("onclick", "return saveHistoryLog('" + divToAppend.id + "','" + taskId + "','" + unumber + "');");
+            } else {
+                if (taskId == null) {
+                    inp.setAttribute("onclick", "return saveHistoryLog('" + divToAppend.id + "','recordId','" + unumber + "');");
+                } else {
+                    inp.setAttribute("onclick", "return saveHistoryLog('" + divToAppend.id + "','" + taskId + "','" + unumber + "');");
+                }
+            }
+            inp.setAttribute("value", "Save");
+            inp.setAttribute("style", "display:none; border:1px solid #c6c6c6; font-weight:bold; font-size:10px; padding:2px; width:50px; background-color:#C6C6C6; color:black");
+
+            var centr = document.createElement('center');
+            centr.appendChild(inp);
+            pi.appendChild(centr);
+
+            divToAppend.appendChild(p1);
+            divToAppend.appendChild(p2);
+            divToAppend.appendChild(pi);
+
+            for (var i = 0; i < 1; i++) {
+                var p3 = document.createElement('a');
+                p3.setAttribute("style", "text-decoration:none;cursor:pointer");
+                var spn = document.createElement('p');
+                spn.setAttribute("style", "padding-top: 3px; font-weight:bold; font-size: 10px");
+                var img = document.createElement('img');
+                img.setAttribute("width", "20px");
+                img.setAttribute("height", "20px");
+                img.setAttribute("style", "float:left; margin: 0 6px;vertical-align:middle;");
+                if (i == 0) {
+                    img.setAttribute("src", "{!URLFOR($Resource.ClickToDial__ClickToDialImageResources,'images/svg/mail.svg')}");
+                    spn.innerHTML = "Send email";
+                    p3.setAttribute("href", "/_ui/core/email/author/EmailAuthor?retURL=%2Fhome%2Fhome.jsp&p2_lkid="+recordId);
+                    p3.setAttribute("target", "_blank");
+
+                } 
+                if (isWidget) {
+                    if (i == 0 || i == 1) {
+                        p3.appendChild(img);
+                        p3.appendChild(spn);
+                        divToAppend.appendChild(p3);
+                    }
+                } else {
+                    p3.appendChild(img);
+                    p3.appendChild(spn);
+                    divToAppend.appendChild(p3);
+                }
+            }
+            var an = document.createElement('a');
+            an.setAttribute("style", "cursor:pointer;margin:0");
+            an.setAttribute("onclick", "showLogCall('" + divToAppend.id + "',false)");
+            divToAppend.appendChild(an);
+        }
+
+        function clearContents(clsname) {
+            var inputId = $('.inputSearch').attr('id');
+            try {
+                var inval = document.getElementById(inputId).value;
+                if (inval != '') {
+                    document.getElementById(inputId).value = '';
+                    $(clsname).css("visibility", "hidden");
+                }
+            } catch (e) {}           
+        }
+
+        function openRecord(id) {
+            var url = document.referrer;
+            url = url.split('/');
+            window.open(url[0] + '//' + url[2] + '/' + id, '_blank');
+        }
+
+        function showButton(btnId) {
+            $("#" + btnId).css("display", "block");
+        }
+
+        function saveHistoryLog(divId, recordId, unumber) {
+            var e = document.getElementById('select' + unumber);
+            var txtarea = document.getElementById('txta' + unumber);            
+            var selected_val = e.options[e.selectedIndex].value;
+            saveLog(recordId, selected_val, txtarea.value);
+            $("#btn" + unumber).css("display", "none");
+            return false;
+        }
+
+
+
+        //Common function for displaying Sidebar Tab Context.
+        function skypeTabContent(name, object, id, sliderName, htmlElementId, userToCall, phone, accChildElement, otherParam, vmTime, unumber, rid) {
+            try {   
+                var userToCall = Encoder.htmlEncode(userToCall);
+                var phone = Encoder.htmlEncode(phone);
+                var unumber = Encoder.htmlEncode(unumber);  
+                 var name = Encoder.htmlEncode(name);             
+                var mdiv = document.createElement("div");
+                mdiv.setAttribute("id", "mdiv" + unumber);
+                mdiv.setAttribute("class", "mdivClass");
+                mdiv.setAttribute("style", "display:none");
+                var imageLog = document.createElement("img");
+                imageLog.setAttribute("id", "imgL" + unumber);
+                imageLog.setAttribute("class", "imLogClass");
+                imageLog.setAttribute("width", "14px");
+                imageLog.setAttribute("height", "14px");
+                imageLog.setAttribute("style", "cursor:pointer;float:right; margin-top:-11px;padding-right:4px");
+                imageLog.setAttribute("src", "{!URLFOR($Resource.ClickToDial__ClickToDialImageResources,'images/svg/download.svg')}");
+                imageLog.setAttribute("onclick", "showLogCall('" + unumber + "',false)");
+
+                var vmDiv = document.createElement("div");
+                vmDiv.setAttribute("style", "margin-bottom:2px;padding:3px 0;background-color:#f5f5f4;border-bottom: 3px solid white;");
+                var vmNumber = document.createElement("a");
+                vmNumber.innerHTML =userToCall;
+                vmNumber.setAttribute("style", "padding:3px;cursor:pointer;margin:4px 4px 4px 7px");
+                var vmTimeStamp = document.createElement("span");
+                vmTimeStamp.innerHTML = accChildElement;
+                vmTimeStamp.setAttribute("style", "margin:4px 4px 4px 7px;padding:3px 0;");               
+                var listRecordName = document.createElement('a'); //main anchor tag.
+                var accFlg = false;
+                listRecordName.setAttribute("class", "popup3 userMru");
+                listRecordName.setAttribute("onmouseover", "hoverPosition(this," + '\'' + htmlElementId + '\'' + ");");
+                listRecordName.setAttribute("target", "_blank");
+
+
+                var imageArrow = document.createElement('img');
+                imageArrow.setAttribute('width', '14px');
+                imageArrow.setAttribute('height', '14px');
+                imageArrow.setAttribute('onclick', "openRecord('" + rid + "')");
+                imageArrow.setAttribute('style', 'cursor:pointer;float:right;margin-top:-23px;padding-right:4px');
+                imageArrow.setAttribute("src", "{!URLFOR($Resource.ClickToDial__ClickToDialImageResources,'images/svg/log-out.svg')}");
+
+
+
+
+                //Selecting image for anchor tag according to sobject name.
+                var image = document.createElement('img');
+                if (sliderName == '#history#') {
+                    
+                } else {
+                    image.setAttribute("class", "mruIcon");
+                    image.setAttribute("src", "/s.gif");
+                    if (sliderName != '#whereToLog#')
+                        image.setAttribute("style", "vertical-align:middle; margin:4px;");
+                    if (object == 'Lead') {
+                        listRecordName.setAttribute("class", "popup3 leadMru");
+                    } else if (object == 'Contact') {
+                        listRecordName.setAttribute("class", "popup3 contactMru");
+                    } else if (object == 'Account') {
+                        accFlg = true;
+                        listRecordName.setAttribute("class", "popup3 accountMru");
+                    } else if (object == 'Opportunity') {
+                        listRecordName.setAttribute("class", "popup3 opportunityMru");
+                    } else if (otherParam == 'OtherNumber') {
+                        $(image).removeClass("mruIcon");
+                        image.setAttribute("src", "{!URLFOR($Resource.ClickToDial__ClickToDialImageResources,'images/svg/phone.svg')}");
+                    } else if (name.indexOf('(Ow)') != -1) {
+                        listRecordName.setAttribute("class", "popup3 chatter-photo");
+                        image.setAttribute("src", object);
+                        image.setAttribute("style", "vertical-align:middle; margin:4px;margin-top:0px;width:15px;height:15px");
+                    }
+                    listRecordName.appendChild(image);
+                }
+
+                // Displaying WhereToLog Context with radio buttons. 
+                if (sliderName == '#whereToLog#' && otherParam != 'OtherNumber') {
+                    listRecordName.setAttribute("title", name.replace(',', ''));
+                    var radioBtn = document.createElement('input');
+                    if (accChildElement == 'Child') {
+                        radioBtn.setAttribute("style", "margin-left: 10px");
+                    }
+                    radioBtn.setAttribute("type", "radio");
+                    radioBtn.setAttribute("onchange", "javascript:logSave(); return false;");
+                    radioBtn.setAttribute("class", "logradiobtn");
+
+                    if (flag == 1) {
+                        //radioBtn.setAttribute("checked", "checked");
+                        flag = flag + 1;
+                    }
+                    radioBtn.setAttribute("value", id);
+                    radioBtn.setAttribute("name", "whereToLog");
+                    if (accFlg == false) {
+                        listRecordName.appendChild(radioBtn);
+                    }
+
+                }
+
+                //anchor attrib settings for other number which is not exist in salesforce.
+                if (otherParam == 'OtherNumber') {
+                    listRecordName.setAttribute("onclick", "Call('null', '','" + name + "','" + currentId + "','" + sliderName + "',true,'" + name + "')");
+                    listRecordName.setAttribute("style", "background-color:#eaf5f7;display: block;width:155px !important;height:12px");
+                    listRecordName.setAttribute("title", "Click To Call.");
+                }
+                var span = document.createElement('span');
+                var anchorOne = document.createElement('a');
+                //setting link to redirect on record and adding ... in text if lenght more then 16 char.
+                if ((sliderName == '#whereToLog#' && otherParam != 'OtherNumber') || sliderName == '#voiceMail#' || sliderName == '#history#') {
+                    var url = document.referrer;
+                    url = url.split('/');
+                    if (sliderName == '#voiceMail#' || sliderName == '#history#') {
+                        listRecordName.setAttribute("href", url[0] + '//' + url[2] + '/' + id);
+                    } else {
+                        anchorOne.setAttribute("href", url[0] + '//' + url[2] + '/' + id);
+                        anchorOne.setAttribute('target', '_blank');
+                    }
+                }
+                // Hover settings.
+                if (sliderName == '#hisSearch#' || sliderName == '#history#') {
+                    span.setAttribute("class", "comment bubble");
+                    //for Context tab. displaying different user to user calling.
+                    if ((sliderName != '#hisSearch#' && sliderName != '#history#') && (name.indexOf('(Ow)') != -1 || name.indexOf('(Ch)') != -1)) {
+                        var imageOne = document.createElement('img');
+                        imageOne.setAttribute('width', '11px');
+                        imageOne.setAttribute('height', '11px');
+                        imageOne.setAttribute('style', 'vertical-align: middle;margin-top: 4px;margin-right:2px');
+                        imageOne.setAttribute("src", "{!URLFOR($Resource.ClickToDial__ClickToDialImageResources,'images/svg/phone.svg')}");
+
+                        var anchorTwo = document.createElement('a');
+                        var anchorTwoP = document.createElement('p');
+                        anchorTwoP.innerHTML = name.replace(',', '').replace('(Ch)', '').replace('(Ow)', '');
+                        anchorTwoP.setAttribute("class", "truncate");
+                        anchorTwoP.setAttribute("onclick", "Call('', '','" + userToCall + "','" + id + "','" + sliderName + "',true,'" + name + "'); return false;");
+                        span.appendChild(imageOne);
+                        anchorTwo.appendChild(anchorTwoP);
+                        span.appendChild(anchorTwoP);
+                    }
+
+                    // Display phone numbers in hover. 
+                    if (otherParam != 'OtherNumber') {
+                        var phoneNo = new Array();
+                        phoneNo = phone.replace(',', '').split('#');
+                        for (var j = 0; j < phoneNo.length; j++) {
+                            var imageOne = document.createElement('img');
+                            imageOne.setAttribute('width', '11px');
+                            imageOne.setAttribute('height', '11px');
+                            imageOne.setAttribute('style', 'margin-top: 4px;');
+                            var anchorThree = document.createElement('a');
+                            var breaks = document.createElement('br');
+                            if (j == 0) {
+                                imageOne.setAttribute("src", "{!URLFOR($Resource.ClickToDial__ClickToDialImageResources,'images/svg/phone.svg')}");
+                                span.appendChild(imageOne);
+                            } else if (j == 1) {
+                                imageOne.setAttribute("src", "{!URLFOR($Resource.ClickToDial__ClickToDialImageResources,'images/svg/phone.svg')}");
+                                span.appendChild(imageOne);
+                            } else {
+                                if (phoneNo[j].trim() != '' && phoneNo[j].trim() != 'null') {
+                                    if (j == 2) {
+                                        imageOne.setAttribute("src", "{!URLFOR($Resource.ClickToDial__ClickToDialImageResources,'images/svg/phone.svg')}");
+                                        span.appendChild(imageOne);
+                                    } else {
+                                        imageOne.setAttribute("src", "{!URLFOR($Resource.ClickToDial__ClickToDialImageResources,'images/svg/phone.svg')}");
+                                        span.appendChild(imageOne);
+                                    }
+                                }
+                            }
+
+                            $(anchorThree).on("click", function(e) {
+                                e.preventDefault();
+                            });
+                            var fullPhNo;
+                            if (phoneNo[j].trim() != '' && phoneNo[j].trim() != 'null') {
+                                fullPhNo = phoneNo[j];
+                                var anchorThreeP = document.createElement('p');
+
+                                anchorThreeP.setAttribute("class", "truncate");
+                                anchorThreeP.innerHTML = phoneNo[j];
+
+                                anchorThreeP.setAttribute("onclick", "Call('', '','" + fullPhNo + "','" + id + "','" + sliderName + "',true,'" + name + "'); return false;");
+                                anchorThree.appendChild(anchorThreeP);
+                                span.appendChild(anchorThreeP);
+                            } else {
+                                if (j <= 1) {
+                                    anchorThree.innerHTML = 'Not Available.';
+                                    span.appendChild(anchorThree);
+                                    span.appendChild(breaks);
+                                }
+                            }
+                        }
+                        listRecordName.appendChild(span);
+                    }
+                    var spanTwo = document.createElement('span');
+                    var spanTwoP = document.createElement('p');
+
+                    spanTwoP.setAttribute("class", "truncate");
+                    spanTwoP.innerHTML = name.replace(',', '').replace('(Ch)', '');
+                    if (sliderName == '#history#') {
+                        if (otherParam == 'Inbound' && vmTime == '0s'){
+                            spanTwoP.setAttribute("style", "color:red; padding-left:5px; width:155px");
+                        }else{
+                            spanTwoP.setAttribute("style", "padding-left:5px; width:155px");
+                        }
+                    }
+                    spanTwo.appendChild(spanTwoP);
+                    listRecordName.appendChild(spanTwoP);
+
+                    if (sliderName == '#context#') {
+                        scrollDiv.appendChild(listRecordName);
+                    } else if (sliderName == '#voiceMail#' || sliderName == '#history#') {
+                        $(listRecordName).css("font-weight", "bold");
+                        vmDiv.appendChild(listRecordName);
+                        vmDiv.appendChild(imageArrow);
+                        vmNumber.setAttribute("onclick", "Call('', '','" + userToCall + "','" + id + "','" + sliderName + "',true,'" + name + "'); return false;");
+                        // vmNumber.setAttribute("onclick", "Call('', '','" + userToCall + "','" + id + "','" + sliderName + "'," + isNumber(userToCall) + ",'" + name + "'); return false;");
+                        var vmNumberP = document.createElement('p');
+                        vmNumberP.setAttribute("class", "linkCrop");
+                        vmNumberP.appendChild(vmNumber);
+                        vmDiv.appendChild(vmNumberP);
+                        if (sliderName == '#voiceMail#')
+                            vmDiv.appendChild(vmImage);
+                        var breaks = document.createElement('br');
+                        vmDiv.appendChild(breaks);
+                        vmDiv.appendChild(vmTimeStamp);
+                        vmDiv.appendChild(imageLog);                        
+                        mdiv.setAttribute('data-rid',id);
+                        createLogCallSection(mdiv, id, unumber, false, rid);
+                        vmDiv.appendChild(mdiv);
+                        if (sliderName == '#voiceMail#') {
+                            voiceDiv.appendChild(vmDiv);
+                        } else {
+                            historyDiv.appendChild(vmDiv);
+                        }
+                    } else if (sliderName == '#chatter#') {
+                        contextDiv.appendChild(listRecordName);
+                    } else if (sliderName == '#hisSearch#') {
+                        historyDiv.appendChild(listRecordName);
+                    }
+                }
+
+                if (sliderName == '#whereToLog#') {
+                    var hr = document.createElement('hr');
+                    var breaks = document.createElement('br');
+                    var sn = document.createElement('span');
+                    sn.setAttribute('class', 'createNewLeadP');
+                    if (sliderName == '#whereToLog#' && object == 'Lead End') {
+                        sn.setAttribute("onclick", "createLead()");
+                        sn.innerHTML = 'Create new lead';
+                        WhereToLogDiv.appendChild(sn);
+                        WhereToLogDiv.appendChild(hr);
+                        WhereToLogDiv.appendChild(breaks);
+                    } else if (sliderName == '#whereToLog#' && object == 'Contact End') {
+                        WhereToLogDiv.appendChild(hr);
+                        WhereToLogDiv.appendChild(breaks);
+                    } else if (sliderName == '#whereToLog#' && object == 'Account End') {
+                        WhereToLogDiv.appendChild(hr);
+                        WhereToLogDiv.appendChild(breaks);
+                    } else if (sliderName == '#whereToLog#' && object == 'Opp End') {
+                        WhereToLogDiv.appendChild(hr);
+                        WhereToLogDiv.appendChild(breaks);
+                    } else {
+                        var anchorOneP = document.createElement('p');
+                        anchorOneP.setAttribute("class", "truncate");
+                        anchorOneP.innerHTML = name.replace(',', '');
+                        anchorOne.appendChild(anchorOneP);
+                        listRecordName.appendChild(anchorOne);
+                        if (accFlg) {
+                            var ac = document.createElement('a');
+                            ac.setAttribute("style", "text-decoration:none");
+                            var number = $('#incDiv').attr("data-pn");
+                            $(ac).attr("onclick", "createNewContact('" + id + "','" + number + "'); return false;");
+                            var p = document.createElement('p');
+                            p.setAttribute("class", "createNewConP");
+                            $(p).text('Create new contact');
+                            listRecordName.appendChild(ac);
+                        }
+                        WhereToLogDiv.appendChild(listRecordName);
+                        WhereToLogDiv.appendChild(breaks);
+                    }
+                }
+                sliderName = "";
+                selectFirstRadio();
+            } catch (e) {
+                console.log(e);
+            }
+        }
+
+        String.prototype.trim = function() {
+            return this.replace(/^\s+|\s+$/g, "");
+        };
+
+        function selectFirstRadio() {
+            try {
+                $("input:radio[name=whereToLog]:first").attr('checked', true);
+            } catch (e) {}
+        }
+    </script>
+
+    <script>
+        var recordId = '';
+        var objectName = '';
+        var callRecordId = '';
+        var urlRecordId = '';
+        counter = 1000;
+        var whoId;
+        var whatId;
+
+        function DialerCall(Flag, User, UserTCall, recordId, callType, isPhone, name) {
+            UserTCall = Encoder.htmlEncode($("#phone").val());
+            searchName(UserTCall);
+        }
+
+        function setName(sname, rid) {
+            pNumber = $("#phone").val();
+            Call('', '', pNumber, rid, '', true, sname);
+        }
+
+        function Call(Flag, User, UserTCall, recordId, callType, isPhone, name) {  
+        
+            UserTCall = UserTCall.replace(/[`~!@#$%^&*()_|+\-=?;:'",' '.<>\{\}\[\]\\\/]/gi, '');
+                  
+            StartCall();             
+            $('#incDiv').attr("data-pn", UserTCall);
+            var des = $('#txta' + counter).text();
+            var parenturl = document.referrer;
+
+            if (isPhone) {
+                this.recordId = recordId;
+                callRecordId = recordId;
+                if (parenturl.split('/')[3].split('?')[0] == 'apex') {
+                    urlRecordId = recordId;
+                } else {
+                    urlRecordId = parenturl.split('/')[3].split('?')[0];
+                }
+            }
+            fetchWhatAndWhoId();
+            wIdLogic();
+            createLog(whoId, whatId, 'Outbound', '0', des, UserTCall, counter,'');  
+            //PageLoadSearch('');          
+            counter = counter + 1;
+            window.open('skype:'+UserTCall+'?call','_self');
+            //setIntervalSB(10000);
+            sleep(5000);
+            //window.setInterval(PageLoadSearch(''), 10000);
+           
+            
+        }
+             
+        function sleep(milliseconds) {
+                var start = new Date().getTime();
+                for (var i = 0; i < 1e7; i++) {
+                    if ((new Date().getTime() - start) > milliseconds){
+                        break;
+                    }
+                }
+                PageLoadSearch('');
+            }
+        function fetchWhatAndWhoId() {
+            var crObjName, urObjName;
+            whoId = '';
+            whatId = '';
+            if (urlRecordId == 'home') urlRecordId = '';
+            if (urlRecordId) {
+                if (urlRecordId.substring(0, 3) == '006') {
+                    urObjName = 'Opportunity';
+                    whatId = urlRecordId;
+                } else if (urlRecordId.substring(0, 3) == '003') {
+                    urObjName = 'Contact';
+                    whoId = urlRecordId;
+                } else if (urlRecordId.substring(0, 3) == '001') {
+                    urObjName = 'Account';
+                    whatId = urlRecordId;
+                } else if (urlRecordId.substring(0, 3) == '00Q') {
+                    urObjName = 'Lead';
+                    whoId = urlRecordId;
+                } else { // for other objects
+                    whatId = urlRecordId;
+                }
+                if (urlRecordId.length == 3) {
+                    whatId = '';
+                    whoId = '';
+                }
+            }
+
+            if (callRecordId) {
+
+                if (callRecordId.substring(0, 3) == '006') {
+                    crObjName = 'Oppoptunity';
+                    whatId = callRecordId;
+                } else if (callRecordId.substring(0, 3) == '003') {
+                    crObjName = 'Contact';
+                    whoId = callRecordId;
+                } else if (callRecordId.substring(0, 3) == '001') {
+                    crObjName = 'Account';
+                    whatId = callRecordId;
+                } else if (callRecordId.substring(0, 3) == '00Q') {
+                    crObjName = 'Lead';
+                    whoId = callRecordId;
+                } else if (callRecordId.substring(0, 3) == '005') {
+                    whoId = '';
+                    crObjName = 'User';
+                }
+            }
+        }
+
+        function wIdLogic() {
+            if (callRecordId.substring(0, 3) == '006') {
+                objectName = 'Opportunity';
+                whatId = callRecordId;
+                if ((urlRecordId.substring(0, 3) == '006' || urlRecordId.substring(0, 3) == '001') && (callRecordId.substring(0, 3) == '00Q' || callRecordId.substring(0, 3) == '003')) {
+                    whoId = callRecordId;
+                } else {
+                    whoId = '';
+                }
+            } else if (callRecordId.substring(0, 3) == '003') {
+                objectName = 'Contact';
+                whoId = callRecordId;
+                if (urlRecordId.substring(0, 3) == '006' || urlRecordId.substring(0, 3) == '001') {
+                    whatId = urlRecordId;
+                } else {
+                    whatId = "";
+                }
+            } else if (callRecordId.substring(0, 3) == '001') {
+                whatId = callRecordId;
+                if ((urlRecordId.substring(0, 3) == '006' || urlRecordId.substring(0, 3) == '001') && (callRecordId.substring(0, 3) == '00Q' || callRecordId.substring(0, 3) == '003')) {
+                    whoId = callRecordId;
+                } else {
+                    whoId = '';
+                }
+            } else if (callRecordId.substring(0, 3) == '00Q') {
+                objectName = 'Lead';
+                whoId = callRecordId;
+                whatId = '';
+            } else {
+                whatId = urlRecordId;
+                whoId = '';
+            }
+        }
+        // Update call info and call context on save button.
+        function logSave() {
+            try {
+                var selectedVal = '';
+                var selected = $('input[type="radio"][name="whereToLog"]:checked'); // get checked radio button value.
+                if (selected.length > 0)
+                    selectedVal = selected.val();
+                callRecordId = selectedVal;
+                //Logic for sending whoid or whatid in different scenarios.
+                wIdLogic();
+                //update context in call context.
+                var firstRadioBtn = $('input[type="radio"][name="whereToLog"]:first');
+                var firstRBtnCheck = $(firstRadioBtn).attr('checked');
+                if ((selected.index('input[type="radio"][name="whereToLog"]') <= 0) && !firstRBtnCheck) {
+                    // if there is no context and selected value.
+                    var sVal = $(firstRadioBtn).attr('checked', true).val();
+                    callRecordId = sVal;
+                    wIdLogic();
+                }
+                var tkId = $("#incDiv").attr("data-tkId");
+                reAssignLog(whoId, whatId, tkId);
+            } catch (ex) {
+                console.log(ex);
+            }
+        }
+        function secondsToHms(d) {
+            d = Number(d);
+            var h = Math.floor(d / 3600);
+            var m = Math.floor(d % 3600 / 60);
+            var s = Math.floor(d % 3600 % 60);
+            return ((h > 0 ? h + ":" + (m < 10 ? "0" : "") : "") + m + ":" + (s < 10 ? "0" : "") + s);
+        }
+    </script>
+</apex:page>

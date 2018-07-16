@@ -1,0 +1,86 @@
+<aura:component >
+    <aura:attribute name="addressRec" type="Address_Component__c" default="{'sobjectType': 'Address_Component__c', 'Name': ''}"/>
+    <aura:attribute name="returnText" type="String"/>
+    <aura:attribute name="title" type="String" default="Enter Address"/>
+    <aura:attribute name="showPopup" type="Boolean" default="false"/>
+    <aura:attribute name="displayValue" type="String"/>
+    <aura:attribute name="required" type="Boolean" default="false"/>
+    <aura:attribute name="disabled" type="Boolean" default="false"/>
+    <aura:attribute name="showError" type="Boolean" default="false"/>
+    <aura:attribute name="noState" type="Boolean" default="false"/>
+    
+    <ltng:require afterScriptsLoaded="{!c.loadPicklists}" />
+    
+    <div aria-hidden="false" role="dialog" class="slds-modal slds-fade-in-open">
+    	<div class="slds-modal__container">
+	    	<div class="slds-modal__header">
+	    		<button class="slds-button slds-button--icon-inverse slds-modal__close" onclick="{!c.hideModal}">
+                    <span>
+                        <c:svg class="slds-button__icon slds-button__icon--large" xlinkHref="/resource/SLDS/assets/icons/action-sprite/svg/symbols.svg#close" />
+                        <span class="slds-assistive-text">Close</span>
+                    </span>                 
+                </button>
+	            <h2 class="slds-text-heading--medium">Enter Address</h2>
+	        </div>
+	        <div class="slds-modal__content slds-p-around--medium">
+		        <div class="slds-grid slds-grid--align-center">                                            
+                    <div class="slds-col--padded slds-size--1-of-1 slds-text-align--left">                
+                        <h3 class="slds-section-title--divider lightBlue">{!v.title}</h3>
+                    </div>
+                </div>
+                <br/>
+                <div class="slds-grid slds-grid--end">
+		        	<div class="slds-col--padded slds-size--1-of-1">
+                        <aura:if isTrue="{!v.required}">
+                        	<span class="slds-float--left red">*</span>
+                        </aura:if>
+		        		<lightning:input label="Street Line 1" disabled="{!v.disabled}" name="streetLine1"  value="{!v.addressRec.StreetLine1__c}" placeholder="Enter Street Line 1"/>               
+		        		<aura:if isTrue="{!and(v.showError,v.addressRec.StreetLine1__c eq '')}">
+                            <label style="padding-top: 12px; font-weight:500; font-size: 10px; color:red" >Street Line 1 cannot be empty.</label>
+                        </aura:if>
+                    </div>
+		    	</div><br/>
+			    <div class="slds-grid slds-grid--end">
+			        <div class="slds-col--padded slds-size--1-of-1"> 
+			        	<lightning:input label="Street Line 2" disabled="{!v.disabled}" name="streetLine2"  value="{!v.addressRec.StreetLine2__c}" placeholder="Enter Street Line 2"/>  
+			        </div>
+			    </div><br/>
+			    <div class="slds-grid slds-grid--end">
+			        <div class="slds-col--padded slds-size--1-of-1"> 
+			        	<lightning:input label="Street Line 3" disabled="{!v.disabled}" name="streetLine3"  value="{!v.addressRec.StreetLine3__c}" placeholder="Enter Street Line 3"/>               
+			        </div>
+			    </div><br/>
+			    <div class="slds-grid slds-grid--end">
+			        <div class="slds-col--padded slds-size--1-of-1"> 
+                        <aura:if isTrue="{!v.required}">
+                        	<span class="slds-float--left red">*</span>
+                        </aura:if>
+			        	<lightning:input label="City" name="city" disabled="{!v.disabled}" value="{!v.addressRec.City__c}" placeholder="Enter City"/>               
+			        	<aura:if isTrue="{!and(v.showError,v.addressRec.City__c eq '')}">
+                            <label style="padding-top: 12px; font-weight:500; font-size: 10px; color:red" >City cannot be empty.</label>
+                        </aura:if>
+                    </div>
+			    </div><br/>
+			    <div class="slds-grid slds-grid--end">
+			        <div class="slds-col--padded slds-size--1-of-1"> 
+                        <aura:if isTrue="{!v.required}">
+                        	<span class="slds-float--left red">*</span>
+                        </aura:if>
+			        	<lightning:input label="Postal/Zip Code" disabled="{!v.disabled}" name="postalzipcode" value="{!v.addressRec.PostalCode__c}" placeholder="Enter Postal/Zip Code"/>               
+			        	<aura:if isTrue="{!and(v.showError,v.addressRec.PostalCode__c eq '')}">
+                            <label style="padding-top: 12px; font-weight:500; font-size: 10px; color:red" >Postal/Zip Code cannot be empty.</label>
+                        </aura:if>
+                    </div>
+			    </div><br/>
+                <c:StateCountry required="{!v.required}" showError="{!v.showError}" countryCode="{!v.addressRec.Country__c}" stateCode="{!v.addressRec.State__c}" noState="{!v.noState}"/>
+		    </div>
+		    <div class="slds-modal__footer">
+		    	<div class="slds-x-small-buttons--horizontal">
+		    		<button class="slds-button btnColor slds-button--brand" disabled="{!v.disabled}" onclick="{!c.saveAddress}">Save</button>
+		    		<button class="slds-button slds-button--neutral" onclick="{!c.hideModal}">Cancel</button>
+		    	</div>
+	        </div>
+        </div>
+    </div>
+    <div class="slds-backdrop slds-backdrop--open"></div>
+</aura:component>

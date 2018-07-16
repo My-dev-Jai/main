@@ -1,0 +1,37 @@
+<apex:page controller="ToughController">
+  <!-- Begin Default Content REMOVE THIS -->
+  <h1>Congratulations</h1>
+  This is your new Page
+  <!-- End Default Content REMOVE THIS -->
+  
+  <apex:pageBlock >
+  <apex:pageblockSection >
+  <apex:repeat value="{!datalist}" var="data">
+  
+  <apex:outputText value="{!data.a.name}"></apex:outputText><br/>
+  <apex:form >
+  <apex:pageBlockTable value="{!data.conlist}" var="cont">
+  <apex:column headerValue="Contact Name" value="{!cont.con.name}"/>
+  <apex:column >
+  <apex:facet name="header">Delete <apex:commandLink action="{!deleteCon}" value="Delete"/></apex:facet>
+    
+  <apex:inputCheckbox value="{!cont.b}"/>
+  </apex:column>
+  </apex:pageBlockTable>
+  </apex:form>
+  <apex:form >
+  <apex:pageBlockTable value="{!data.opplist}" var="oppo">
+  <apex:column value="{!oppo.opp.name}" headerValue="Opportunity name"/>
+  <apex:column headerValue="Delete">
+  <apex:inputCheckbox value="{!oppo.b}"/>
+  </apex:column>
+  </apex:pageBlockTable>
+  </apex:form>
+  
+ 
+  </apex:repeat>
+  </apex:pageblockSection>
+  </apex:pageBlock>
+  
+  
+</apex:page>

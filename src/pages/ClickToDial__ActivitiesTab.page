@@ -1,0 +1,71 @@
+<apex:page sidebar="false" showHeader="true" docType="html-5.0"  tabStyle="ClickToDial__tab">
+
+<html lang="en">
+    <head>
+        <title>Events</title>       
+        <!-- Bootstrap core CSS -->
+       <apex:stylesheet value="{!URLFOR($Resource.ClickToDial__Bootstrap,'bootstrap-3.2.0-dist/css/bootstrap.min.css')}"/>
+        <style>
+            .divblocks {
+                height:220px;
+                color: #048FC2;
+            }
+            .detailP{
+                height: 120px;
+                color: #999;
+                padding-top: 10px;
+            }
+            .bs .lastItem .btn
+                {
+                <!--Issue refreshListButton was not showing on List view -->
+                background:url("/img/alohaSkin/sync.png") no-repeat scroll 2px 2px rgba(0, 0, 0, 0);
+                }
+                
+         .bs h1, .bs .h1, .bs h2, .bs .h2, .bs h3, .bs .h3 {
+          margin-top: 20px;
+          margin-bottom: 10px;
+        }
+        .bs h1, .bs h2, .bs h3, .bs h4, .bs h5, .bs h6, .bs .h1, .bs .h2, .bs .h3, .bs .h4, .bs .h5, .bs .h6 {
+          font-family: inherit;
+          font-weight: 600;
+          line-height: 1.1;
+          color: inherit;
+        }
+        
+       </style>
+         
+    </head>
+    <body> 
+        <div style ="width:20%">  
+        <c:BootstrapComponent xFactor="Activity"/>       
+        </div>
+       
+         <div class="bs">
+            <div class="container-fluid" style="margin-top:17px;">
+                <div class="row row-offcanvas row-offcanvas-right">
+                    <div class="col-xs-12 col-sm-9">
+                       <apex:form >  
+                        <div class="jumbotron" style="-webkit-border-radius:5px; padding:22px;">                       
+                           <h2>Activities</h2>                          
+                            <div style="float:right; padding:8px;">
+                        </div>                          
+                           </div>
+                            </apex:form> 
+                           <div id="LeadListView" >
+                            <apex:enhancedList type="Activity" id="EventList" height="400" customizable="True"/>
+                            
+                        </div>
+                    </div><!--/span-->
+                </div><!--/row-->
+            </div><!--/.container-->
+        </div>
+        
+        
+        <!-- Bootstrap core JavaScript <div class="container-fluid"></div>
+        ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <apex:includeScript value="{!URLFOR($Resource.ClickToDial__Bootstrap,'bootstrap-3.2.0-dist/js/bootstrap.min.js')}"/>
+    </body>
+</html>
+
+</apex:page>
