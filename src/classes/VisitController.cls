@@ -6,7 +6,7 @@ public class VisitController{
       controller.addfields(new List<String>{'Visits__c'});
       this.poc= (POC__c)controller.getRecord();
       //b=false;
-      System.debug('test');
+      //System.debug('test');
       
     }
     public void increamentor(){
